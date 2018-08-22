@@ -54,6 +54,7 @@ public class TwistGame {
       }
     else
     return false;
+
   }
     //TASK 2 DONE BY PRANAV RAWAT (U6637058)
 
