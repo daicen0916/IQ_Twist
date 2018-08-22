@@ -44,11 +44,11 @@ public class TwistGame {
     {
       checks++;
     }
-    if(a[3]=='0' || a[3]>='1' && a[3]<'8')
+    if((a[0]>='i' && a[0]<='l' && a[3]=='0') ||(a[0]>='a' && a[0]<='h' && a[3]>='0' && a[3]<='7'))
     {
       checks++;
     }
-      if(checks==5)
+    if(checks==5)
       {
         return true;
       }
