@@ -16,7 +16,7 @@ public class TwistGame {
    * - the first character is in the range a .. l (pieces and pegs)
    * - the second character is in the range 1 .. 8 (columns)
    * - the third character is in the range A .. D (rows)
-   * - the fourth character is in the range 0 .. 8 (if a piece) or is 0 (if a peg)
+   * - the fourth character is in the range 0 .. 7 (if a piece) or is 0 (if a peg)
    *
    * @param piecePlacement A string describing a single piece or peg placement
    * @return True if the placement is well-formed
@@ -87,6 +87,9 @@ public class TwistGame {
    * and its placement must be valid.   If there are no valid piece placements
    * for the given placement string, return null.
    *
+   * When symmetric placements of the same piece are viable, only the placement
+   * with the lowest rotation should be included in the set.
+   *
    * @param placement A valid placement string (comprised of peg and piece placements)
    * @return An set of viable piece placements, or null if there are none.
    */
@@ -96,14 +99,21 @@ public class TwistGame {
   }
 
   /**
-   * Return an array of all unique solutions to the game, given a starting placement.
-   * A given unique solution may have more than one than
-   * one placement sequence, however, only a single (unordered) solution should
-   * be returned for each such case.
+   * Return an array of all unique solutions for a given starting placement.
+   *
+   * Each solution should be a 32-character string giving the placement sequence
+   * of all eight pieces, given the starting placement.
+   *
+   * The set of solutions should not include any symmetric piece placements.
+   *
+   * In the IQ-Twist game, valid challenges can have only one solution, but
+   * other starting placements that are not valid challenges may have more
+   * than one solution.  The most obvious example is the unconstrained board,
+   * which has very many solutions.
    *
    * @param placement A valid piece placement string.
-   * @return An array of strings, each describing a unique unordered solution to
-   * the game given the starting point provided by placement.
+   * @return An array of strings, each 32-characters long, describing a unique
+   * unordered solution to the game given the starting point provided by placement.
    */
   public static String[] getSolutions(String placement) {
     // FIXME Task 9: determine all solutions to the game, given a particular starting placement
