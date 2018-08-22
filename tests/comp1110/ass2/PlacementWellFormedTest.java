@@ -72,7 +72,7 @@ public class PlacementWellFormedTest {
     for (char p = 'a'; p <= 'l'; p++) {
       for (char r = '-'; r <= 'D'; r++)
         test(p+"4A"+r, (p >= 'a' && p <= 'h' && r >= '0' && r <= '7') || (p >= 'i' && p <= 'l' && r == '0'));
-    }
+  }
   }
 
 }

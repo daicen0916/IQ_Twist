@@ -22,29 +22,40 @@ public class TwistGame {
    * @return True if the placement is well-formed
    */
   public static boolean isPlacementWellFormed(String piecePlacement) {
-    if(piecePlacement.length()==4)
+      char[] a = piecePlacement.toCharArray();
+      int checks = 0;
+    if (a.length==4)
     {
-      if(piecePlacement.charAt(0)>='a' && piecePlacement.charAt(1)<='l')
-      {
-        int c= (int)piecePlacement.charAt(1);
-        if(c>=1 && c<=8)
-        {
-          if(piecePlacement.charAt(2)>='A' && piecePlacement.charAt(1)<='D')
-          {
-            if ((piecePlacement.charAt(3)>='A' && piecePlacement.charAt(3)<='D') || piecePlacement.charAt(3)==0)
-            {
-              return true;
-            }
-          }
-        }
-      }
+      checks++;
     }
     else
     {
       return false;
     }
+    if(a[0]>='a' && a[0]<='l')
+    {
+      checks++;
+    }
+    if(a[1]>='1' && a[1]<='8')
+    {
+      checks++;
+    }
+    if(a[2]>='A' && a[2]<='D')
+    {
+      checks++;
+    }
+    if(a[3]=='0' || a[3]>='1' && a[3]<'8')
+    {
+      checks++;
+    }
+      if(checks==5)
+      {
+        return true;
+      }
+    else
     return false;
-  } //TASK 2 DONE BY PRANAV RAWAT (U6637058)
+  }
+    //TASK 2 DONE BY PRANAV RAWAT (U6637058)
 
   /**
    * Determine whether a placement string is well-formed:
