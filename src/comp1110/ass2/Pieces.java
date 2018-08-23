@@ -1,9 +1,9 @@
 package comp1110.ass2;
 public class Pieces {
-    private int id; //maybe id should be char?
+    private String id;
     public char color; //Cen Dai: color could be used to check whether the piece matches the peg or board, so I changed it into public.
     //i->Red,j->Blue,k->Green,l->Yellow
-    int position; //The same as pegposition, if the piece position should be a string for the editing convenience.
+    String position; //The same as pegposition, if the piece position should be a string for the editing convenience.
     int orientation;
     Rotation rotation; // Cen Dai
     Flipping flipping; // Cen Dai
@@ -14,7 +14,7 @@ public class Pieces {
 
     }
 
-    public int getPiecePosition()
+    public String getPiecePosition()
     {
         return position;
     }

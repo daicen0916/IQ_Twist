@@ -132,6 +132,9 @@ public class TwistGame {
     return null;
   }
 
+  //public static void InitializeBoard() //get a objective then initialize the board
+
+
   // public static void ErrorReport{}
   //if player place a piece overlap another existing piece or a peg is already in the location and the peg's color and the piece's color are not matched.
   //This method will throw a warning to the player that his/her behaviour is illegal.
