@@ -131,4 +131,8 @@ public class TwistGame {
     // FIXME Task 9: determine all solutions to the game, given a particular starting placement
     return null;
   }
+
+  // public static void ErrorReport{}
+  //if player place a piece overlap another existing piece or a peg is already in the location and the peg's color and the piece's color are not matched.
+  //This method will throw a warning to the player that his/her behaviour is illegal.
 }

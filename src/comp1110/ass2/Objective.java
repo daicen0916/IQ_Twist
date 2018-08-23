@@ -14,3 +14,4 @@ public  int getPiece_position_initial()
     return Piece_position_initial;
 }
 }
+
