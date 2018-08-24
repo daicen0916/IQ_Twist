@@ -1,6 +1,7 @@
 package comp1110.ass2;
 
-import java.util.Set;
+import java.lang.reflect.Array;
+import java.util.*;
 
 /**
  * This class provides the text interface for the Twist Game
@@ -71,7 +72,61 @@ public class TwistGame {
    */
   public static boolean isPlacementStringWellFormed(String placement) {
     // FIXME Task 3: determine whether a placement is well-formed
-    return false;
+    // check if the string consists of exactly N 4-char placement
+    if(placement.length()%4!=0){
+      return false;
+    }
+    if(placement.length()/4<1||placement.length()/4>15){
+      return false;
+    }
+    // split the long placement string into a string list, each element contains 4 char.
+    List<String> placementList = new ArrayList<String>();
+    for (int index =0;index<placement.length()/4;index++){
+      String temp = placement.substring(4*index,4*index+4);
+      placementList.add(temp);
+    }
+    //check whether each piece or peg placement is well-formed
+    for(String x:placementList){
+      if(isPlacementWellFormed(x)==false){
+        return false;
+      }
+    }
+    //build a char array, elements are the head char of the placement.
+    char[] HeadChar = new char[placement.length()/4];
+    for (int i =0;i<HeadChar.length;i++){
+      HeadChar[i]=placementList.get(i).charAt(0);
+    }
+    //check if the placements are in correct order
+    for(int i=0;i<HeadChar.length-1;i++){
+      if(HeadChar[i]>HeadChar[i+1]){
+        return false;
+      }
+    }
+    //check if the piece and red peg only exist 0 or 1 time.
+    for(char x='a';x<='i';x++){
+      int count =0;
+      for(char y:HeadChar){
+        if(y==x){
+          count++;
+        }
+      }
+      if(count>1){
+        return false;
+      }
+    }
+    //check no green/blue/yellow pegs appear more than twice
+    for(char x='i';x<='l';x++){
+      int count =0;
+      for(char y:HeadChar){
+        if(y==x){
+          count++;
+        }
+      }
+      if(count>2){
+        return false;
+      }
+    }
+    return true;
   }
 
   /**
