@@ -79,11 +79,10 @@ public class TwistGame {
     if(placement.length()/4<1||placement.length()/4>15){
       return false;
     }
-    // split the long placement string into a string list, each element contains 4 char.
-    List<String> placementList = new ArrayList<String>();
-    for (int index =0;index<placement.length()/4;index++){
-      String temp = placement.substring(4*index,4*index+4);
-      placementList.add(temp);
+    // split the long placement string into a string array, each element contains 4 char.
+    String[] placementList =new String[placement.length()/4];
+    for(int index=0;index<placement.length()/4;index++){
+        placementList[index] = placement.substring(4*index,4*index+4);
     }
     //check whether each piece or peg placement is well-formed
     for(String x:placementList){
@@ -94,7 +93,7 @@ public class TwistGame {
     //build a char array, elements are the head char of the placement.
     char[] HeadChar = new char[placement.length()/4];
     for (int i =0;i<HeadChar.length;i++){
-      HeadChar[i]=placementList.get(i).charAt(0);
+      HeadChar[i]=placementList[i].charAt(0);
     }
     //check if the placements are in correct order
     for(int i=0;i<HeadChar.length-1;i++){
