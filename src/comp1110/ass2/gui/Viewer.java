@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.application.Platform;
 import javafx.scene.Node;
@@ -45,32 +46,68 @@ public class Viewer extends Application {
     TextField textField;
 
     private final Group img=new Group();
+
+
+    int[] Rotate(String placement, ImageView image){
+        //the input is a 4 char string. It represents a piece's location and shape
+        char[] a = placement.toCharArray();
+        int rotate=(a[3]-'0')%4;
+        int[] shift = {0,0}; //shift[0] is x; shift[1] is y
+        if(a[0]=='a'||a[0]=='b'||a[0]=='d'||a[0]=='f'){
+            if(rotate==1||rotate==3){
+                shift[0]=-SQUARE_SIZE/2;
+                shift[1]=SQUARE_SIZE/2;
+            }
+        }else if(a[0]=='c'){
+            if(rotate==1||rotate==3){
+                shift[0]=(int)(-1.5*SQUARE_SIZE);
+                shift[1]=(int)(1.5*SQUARE_SIZE);
+
+            }
+        }else if(a[0]=='h'){
+            if(rotate==1||rotate==3){
+                shift[0]=-SQUARE_SIZE;
+                shift[1]=SQUARE_SIZE;
+            }
+        }
+        return shift;
+    }
     /**
      * Draw a placement in the window, removing any previously drawn one
      *
      * @param placement  A valid placement string
      */
     void makePlacement(String placement) {
-        char[]a = placement.toCharArray();
-        char id = a[0];
-        int x= (int)(a[1]-'1');
-        int y =(int)(a[2]-'A');
-        ImageView item =new ImageView();
-        item.setImage(new Image(Viewer.class.getResource(URI_BASE + id + ".png").toString()));
-        //System.out.println(item.getScaleX());
+        // split the placement string into a string array;
+        String[] placementArray = new String[placement.length()/4];
+        for(int i =0;i<placementArray.length;i++){
+            placementArray[i]= placement.substring(4*i,4*i+4);
+            //System.out.println(placementArray[i]);
+        }
+        for(int i=0; i<placementArray.length;i++){
+            System.out.println(placementArray[i]);
+            char[]a = placementArray[i].toCharArray();
+            char id = a[0];
+            int x= (int)(a[1]-'1');
+            int y =(int)(a[2]-'A');
+            ImageView item =new ImageView();
+            Image pic = new Image(Viewer.class.getResource(URI_BASE + id + ".png").toString());
+            item.setImage(pic);
+            item.setFitWidth(SQUARE_SIZE*pic.getWidth()/100);
+            item.setFitHeight(SQUARE_SIZE*pic.getHeight()/100);
+            //check and set flip
+            if((a[3]-'0')/4!=0){
+                item.setScaleY(-1);
+            }
+            int itemRotate = (a[3]-'0')%4;
+            item.setRotate(itemRotate*90);
+            int[] shift=Rotate(placementArray[i],item);
+            item.setLayoutX(x*SQUARE_SIZE+shift[0]);
+            item.setLayoutY(y*SQUARE_SIZE+shift[1]);
+            img.getChildren().add(item);
 
-        item.setFitWidth(SQUARE_SIZE*3);
-        item.setFitHeight(SQUARE_SIZE*2);
-        //System.out.println(x);
-        item.setRotate(90);
-        //item.setLayoutX(0);
-        //item.setLayoutY(0);
-        item.setLayoutX(x*SQUARE_SIZE);
-        item.setLayoutY(y*SQUARE_SIZE+SQUARE_SIZE/2);
-
-        img.getChildren().add(item);
+        }
         root.getChildren().add(img);
-
         // FIXME Task 4: implement the simple placement viewer
     }
 
@@ -86,6 +123,7 @@ public class Viewer extends Application {
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+                //makePlacement("a7A7b6A7c1A3d2A6e2C3f3C4g4A7h6D0i6B0j2B0j1C0k3C0l4B0l5C0");
                 makePlacement(textField.getText());
                 textField.clear();
             }
