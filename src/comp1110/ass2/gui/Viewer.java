@@ -8,8 +8,21 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.application.Platform;
+import javafx.scene.Node;
+import javafx.scene.control.Slider;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.media.AudioClip;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 /**
  * A very simple viewer for piece placements in the twist game.
@@ -31,13 +44,33 @@ public class Viewer extends Application {
     private final Group controls = new Group();
     TextField textField;
 
-
+    private final Group img=new Group();
     /**
      * Draw a placement in the window, removing any previously drawn one
      *
      * @param placement  A valid placement string
      */
     void makePlacement(String placement) {
+        char[]a = placement.toCharArray();
+        char id = a[0];
+        int x= (int)(a[1]-'1');
+        int y =(int)(a[2]-'A');
+        ImageView item =new ImageView();
+        item.setImage(new Image(Viewer.class.getResource(URI_BASE + id + ".png").toString()));
+        //System.out.println(item.getScaleX());
+
+        item.setFitWidth(SQUARE_SIZE*3);
+        item.setFitHeight(SQUARE_SIZE*2);
+        //System.out.println(x);
+        item.setRotate(90);
+        //item.setLayoutX(0);
+        //item.setLayoutY(0);
+        item.setLayoutX(x*SQUARE_SIZE);
+        item.setLayoutY(y*SQUARE_SIZE+SQUARE_SIZE/2);
+
+        img.getChildren().add(item);
+        root.getChildren().add(img);
+
         // FIXME Task 4: implement the simple placement viewer
     }
 
@@ -71,6 +104,7 @@ public class Viewer extends Application {
         Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
 
         root.getChildren().add(controls);
+       // root.getChildren().add(img);
 
         makeControls();
 
