@@ -3,7 +3,15 @@ package comp1110.ass2;
 public class Nodes {
     Pegs peg;
     Pieces piece;
-    String state;//it should responds the statement of a certain location including whether it is occupied by a peg or/and a piece.
+    String state;
+    Nodes(Pegs peg){
+        this.peg=peg;
+    }
+    Nodes(Pieces piece){
+        this.piece=piece;
+    }
+
+    //it should responds the statement of a certain location including whether it is occupied by a peg or/and a piece.
     //If occupied, the peg's color？ The pieces color? Is the circle filled or it's a hole?
     //Node(Peg peg) if the location is occupied by a peg, set Node.peg
     //Node(Piece piece) if the location is occupied by a piece, set Node.piece

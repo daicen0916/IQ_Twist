@@ -141,6 +141,7 @@ public class TwistGame {
    * @return True if the placement sequence is valid
    */
   public static boolean isPlacementStringValid(String placement) {
+
     // FIXME Task 5: determine whether a placement string is valid
     return false;
   }
