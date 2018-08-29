@@ -63,20 +63,37 @@ public class Pieces {
    int shapeCode;
    int rotate;
    int flip;
-   Pieces(char id, Color color, int shapeCode){
+   int width;
+   int height;
+   Pieces(char id, int shapeCode){
        this.id=id;
-       this.color=color;
        this.shapeCode=shapeCode;
        this.rotate=shapeCode%4;
        this.flip=shapeCode/4;
+       this.points= setRotateArray(this.id);
+       getColor();
+       this.height=this.points.length;
+       this.width=this.points[0].length;
    }
+    void getColor(){
+        Color color;
+        if(this.id=='a'||this.id=='b'){
+            this.color=Color.Red;
+        }else if(this.id=='c'||this.id=='d'){
+            this.color=Color.Blue;
+        }else if(this.id=='e'||this.id=='f'){
+            this.color=Color.Green;
+        }else if(this.id=='g'||this.id=='h'){
+            this.color=Color.Yellow;
+        }
+    }
     Point[][] setInitialArray(char id){
        Point[][] initial= new Point[2][3];
        switch (id){
            case 'a':
                initial[0][0]=new Point(Color.Red,true);
                initial[0][1]=new Point(Color.Red,false);
-               initial[0][2]=new Point(Color.Red,false);
+               initial[0][2]=new Point(Color.Red,true);
                initial[1][0]=null;
                initial[1][1]=null;
                initial[1][2]=new Point(Color.Red,false);
@@ -140,10 +157,60 @@ public class Pieces {
        }
        return initial;
     }
-    Point[][] rotateArray(char id){
-       Point[][] initialArray = setInitialArray(id);
-      // Point[][] rotateArray = new Point[1][2];
-       return null;
+    Point[][] setRotateArray(char id){
+       Point[][] flipArray = setFlipArray(id);
+       Point[][] rotateArray=null;
+       int row= flipArray[0].length;
+       int column=flipArray.length;
+       //= new Point[initialArray[0].length][initialArray.length];
+       switch (this.rotate){
+           case 0:
+               rotateArray=flipArray;
+               break;
+           case 1:
+               rotateArray= new Point[row][column];
+               for(int i =0;i<row;i++){
+                   for(int j=0;j<column;j++){
+                       rotateArray[i][j]=flipArray[column-1-j][i];
+                   }
+               }
+               //TODO 1 rotate 90 degree clockwise;
+               break;
+           case 2:
+               rotateArray= new Point[flipArray.length][flipArray[0].length];
+               for(int i =0;i<rotateArray.length;i++){
+                   for(int j=0;j<rotateArray[0].length;j++){
+                       rotateArray[i][j]=flipArray[rotateArray.length-1-i][rotateArray[0].length-1-j];
+                   }
+               }
+               // TODO 2 rotate 180 degree
+               break;
+           case 3:
+               rotateArray= new Point[row][column];
+               for(int i =0;i<row;i++){
+                   for(int j=0;j<column;j++){
+                       rotateArray[i][j]=flipArray[j][row-1-i];
+                   }
+               }
+               // TODO 3 rotate 270 degree
+               break;
+       }
+       return rotateArray;
 
     }
+    Point[][] setFlipArray(char id){
+        Point[][] initialArray= setInitialArray(id);
+        Point[][] flipArray= new Point[initialArray.length][initialArray[0].length];
+        if(this.flip==1){
+            for(int i=0;i<flipArray.length;i++){
+                flipArray[i]=initialArray[initialArray.length-1-i];
+            }
+
+        }else{
+            flipArray=initialArray;
+        }
+        return flipArray;
+    }
+
+
 }

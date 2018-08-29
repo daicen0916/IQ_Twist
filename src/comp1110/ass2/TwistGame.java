@@ -141,9 +141,60 @@ public class TwistGame {
    * @return True if the placement sequence is valid
    */
   public static boolean isPlacementStringValid(String placement) {
+    if(isPlacementStringWellFormed(placement)!=true){
+      return false;
+    }
+    // Build a Nodes[][] represents the board (contains 32 locations)
+    Nodes[][] Board = new Nodes[4][8];
+    //Split the placement string into a String array. Each element is a 4 char placement string
+    String[] placementArray= new String[placement.length()/4];
+    for(int i =0;i<placement.length()/4;i++){
+      placementArray[i]=placement.substring(4*i,4*i+4);
+    }
+    for(int i =0;i<placementArray.length;i++){
+      char[] temp= placementArray[i].toCharArray();
+      int row= temp[2]-'A';
+      int column=temp[1]-'1';
+      // if the string represents a piece, do the following things
+      if(temp[0]>='a'&&temp[0]<='h'){
+        Pieces pieces = new Pieces(temp[0],temp[3]-'0');
+        for(int m =0;m<pieces.height;m++){
+          for(int n=0;n<pieces.width;n++){
+            if(pieces.points[m][n]==null){
+              continue;
+            }
+            if((row+m)>3||(column+n)>7){
+              return false;
+            }
+            if(Board[row+m][column+n]==null){
+              Board[row+m][column+n]= new Nodes(null,pieces.points[m][n]);
+            }else if(Board[row+m][column+n].point!=null){
+              if(pieces.points[m][n]!=null){
+                return false;
+              }
+            }
+          }
+        }
+      }
 
+      if(temp[0]>='i'){
+        Pegs peg = new Pegs(temp[0]);
+        if(Board[row][column]==null){
+          Board[row][column]=new Nodes(peg,null);
+        }else if (Board[row][column].peg!=null){
+          return false;
+        }else if (Board[row][column].point!=null){
+          if(Board[row][column].point.color!=peg.color||Board[row][column].point.hole==false){
+            return false;
+          }else{
+            Board[row][column]=new Nodes(peg,Board[row][column].point);
+          }
+        }
+      }
+
+    }
     // FIXME Task 5: determine whether a placement string is valid
-    return false;
+    return true;
   }
 
   /**
@@ -193,4 +244,5 @@ public class TwistGame {
   // public static void ErrorReport{}
   //if player place a piece overlap another existing piece or a peg is already in the location and the peg's color and the piece's color are not matched.
   //This method will throw a warning to the player that his/her behaviour is illegal.
+
 }

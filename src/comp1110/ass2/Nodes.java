@@ -2,13 +2,11 @@ package comp1110.ass2;
 
 public class Nodes {
     Pegs peg;
-    Pieces piece;
+    Point point;
     String state;
-    Nodes(Pegs peg){
+    Nodes(Pegs peg, Point point){
         this.peg=peg;
-    }
-    Nodes(Pieces piece){
-        this.piece=piece;
+        this.point=point;
     }
 
     //it should responds the statement of a certain location including whether it is occupied by a peg or/and a piece.
