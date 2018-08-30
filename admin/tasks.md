@@ -9,11 +9,17 @@ Everyone: create application skeleton - meeting 14:00 17 Aug
 
 ## Week 5
 
-Zhang San: Task 3 isPiecePlacementWellFormed - 21 Aug
+Pranav Rawat: Task 2 isPiecePlacementWellFormed- 21 Aug
+              Task 5  determine whether a placement string is valid - 29 Aug
+                
 
-Jane Bloggs: Task 4 getNeighbours - 23 Aug
+Cen Dai: Task 3 isPlacementStringWellFormed -21 Aug
+         task 4 implement the simple placement viewer - 29 Aug
+         Task 5  determine whether a placement string is valid - 29 Aug
 
-Erika Mustermann: Task 6 getViablePiecePlacements - 24 Aug (depends on Task 3)
+Ziwei Wang: task 4 implement the simple placement viewer- 24 Aug (depends on Task 3)
+            Task 5  determine whether a placement string is valid - 29 Aug           
+                
 
 ## Week 6
 

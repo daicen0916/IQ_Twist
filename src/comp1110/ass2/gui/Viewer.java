@@ -85,7 +85,6 @@ public class Viewer extends Application {
             //System.out.println(placementArray[i]);
         }
         for(int i=0; i<placementArray.length;i++){
-            System.out.println(placementArray[i]);
             char[]a = placementArray[i].toCharArray();
             char id = a[0];
             int x= (int)(a[1]-'1');
