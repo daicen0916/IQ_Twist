@@ -65,7 +65,7 @@ public class TestUtility {
   };
 
   static final String[] NO_VIABLE = {
-          "a7A7c1A3d2A6e2C3f3C4g4A7h6D0i6A0j2B0j1C0k3C0l4B0l5C0",
+          "a7A7c1A3d2A6e2C3f3C2g4A7h6D0i6A0j2B0j1C0k3C0l4B0l5C0",
           "b6C0c5A2d1B3e4A5f4C2g2B3h1A2i7D0j7B0k5B0k5C0l3A0l3D0",
           "a6A0b4A2d1A3e1C4f3B5g6B2h5D0i5A0j2B0k2C0k2D0l8C0l8D0",
           "a4C4b2C6c1B2e1C6f6A6g4A5h1A0j3B0j8B0k1C0k1D0l6B0l1A0",
@@ -76,60 +76,60 @@ public class TestUtility {
   };
 
   static final String[] CONSTRAINED = {
-          "b6A7d2A6e2C3",
-          "b6C0f4C2g2B3",
-          "b4A2c3A3e1C4",
-          "d7B1e1C6g4A5",
+          "b6A7c1A3f3C2",
+          "b6C0c5A2g2B3",
+          "b4A2c3A3h5D0",
+          "b2C4d7B1",
           "c1B2d4C4",
-          "a1B5d7B7f1A6",
+          "a1B5d7B7",
           "b6A6c2D0f2A2",
-          "e5B4f1B3g3A3",
-          "d3A6f3C4g1B3",
-          "e5C2g6B7"
+          "b7A1g3A3",
+          "c5C0d3A6g1B3",
+          "c3A0f1C4g6B7"
   };
 
 
   static final String[][] SINGLE= {
           {
-                  "c1A3d2A6e2C3f3C4g4A7h6D0i6B0j2B0j1C0k3C0l4B0l5C0",      //  1
+                  "c1A3d2A6e2C3f3C2g4A7h6D0i6B0j2B0j1C0k3C0l4B0l5C0",      //  1
                   "c5A2d1B3e4A5f4C2g2B3h1A2i7D0j7A0k5B0k5C0l3A0l3D0",      //  2
-                  "c3A3d1A3e1C4f4B5g6B2h5D0i5A0j2B0j3C0k2C0k2D0l8C0l8D0",  // 25
-                  "c1B2d7B1e1C6f6A6g4A5h1A0j3B0j7D0k1C0k1D0l6B0l1A0",      // 26
-                  "c1B2d4C4e1C3f4A6g6A1h1A0j3B0j5C0",                      // 49
+                  "c3A3d1A3e1C4f4B3g6B2h5D0i5A0j2B0j3C0k2C0k2D0l8C0l8D0",  // 25
+                  "c1B2d7B1e1C6f6A0g4A5h1A0j3B0j7D0k1C0k1D0l6B0l1A0",      // 26
+                  "c1B2d4C4e1C3f4A0g6A1h1A0j3B0j5C0",                      // 49
                   "c5A2d7B7e5B0f1A6g3A7h5D0i1B0j7A0j7B0k1A0k2B0l3B0l4C0",  // 50
-                  "c2D0d7B1e1A6f2A2g4B2h4A2i7B0j3D0j7D0k3A0l6A0",          // 73
-                  "c2D2d1A0e5B4f1B3g3A3h5A0k1B0k6B0l5A0l3C0",              // 74
+                  "c2D0d7B1e1A3f2A2g4B2h4A2i7B0j3D0j7D0k3A0l6A0",          // 73
+                  "c2D0d1A0e5B4f1B3g3A3h5A0k1B0k6B0l5A0l3C0",              // 74
                   "c5C0d3A6e7A1f3C4g1B3h6D0j4B0k8B0k5D0l3C0",              // 97
-                  "c3A0d1A3e5C2f1C4g6B7h4B2k3D0k5D0l6C0"                   // 98
+                  "c3A0d1A3e5C2f1C4g6B7h4B0k3D0k5D0l6C0"                   // 98
           },
           {
-                  "d2A6e2C3f3C4g4A7h6D0i6B0j2B0j1C0k3C0l4B0l5C0",      //  1
+                  "d2A6e2C3f3C2g4A7h6D0i6B0j2B0j1C0k3C0l4B0l5C0",      //  1
                   "d1B3e4A5f4C2g2B3h1A2i7D0j7A0k5B0k5C0l3A0l3D0",      //  2
-                  "d1A3e1C4f4B5g6B2h5D0i5A0j2B0j3C0k2C0k2D0l8C0l8D0",  // 25
-                  "d7B1e1C6f6A6g4A5h1A0j3B0j7D0k1C0k1D0l6B0l1A0",      // 26
-                  "d4C4e1C3f4A6g6A1h1A0j3B0j5C0",                      // 49
+                  "d1A3e1C4f4B3g6B2h5D0i5A0j2B0j3C0k2C0k2D0l8C0l8D0",  // 25
+                  "d7B1e1C6f6A0g4A5h1A0j3B0j7D0k1C0k1D0l6B0l1A0",      // 26
+                  "d4C4e1C3f4A0g6A1h1A0j3B0j5C0",                      // 49
                   "d7B7e5B0f1A6g3A7h5D0i1B0j7A0j7B0k1A0k2B0l3B0l4C0",  // 50
-                  "d7B1e1A6f2A2g4B2h4A2i7B0j3D0j7D0k3A0l6A0",          // 73
+                  "d7B1e1A3f2A2g4B2h4A2i7B0j3D0j7D0k3A0l6A0",          // 73
                   "d1A0e5B4f1B3g3A3h5A0k1B0k6B0l5A0l3C0",              // 74
                   "d3A6e7A1f3C4g1B3h6D0j4B0k8B0k5D0l3C0",              // 97
-                  "d1A3e5C2f1C4g6B7h4B2k3D0k5D0l6C0"                   // 98
+                  "d1A3e5C2f1C4g6B7h4B0k3D0k5D0l6C0"                   // 98
           },
           {
-                  "e2C3f3C4g4A7h6D0i6B0j2B0j1C0k3C0l4B0l5C0",      //  1
+                  "e2C3f3C2g4A7h6D0i6B0j2B0j1C0k3C0l4B0l5C0",      //  1
                   "e4A5f4C2g2B3h1A2i7D0j7A0k5B0k5C0l3A0l3D0",      //  2
-                  "e1C4f4B5g6B2h5D0i5A0j2B0j3C0k2C0k2D0l8C0l8D0",  // 25
-                  "e1C6f6A6g4A5h1A0j3B0j7D0k1C0k1D0l6B0l1A0",      // 26
-                  "e1C3f4A6g6A1h1A0j3B0j5C0",                      // 49
+                  "e1C4f4B3g6B2h5D0i5A0j2B0j3C0k2C0k2D0l8C0l8D0",  // 25
+                  "e1C6f6A0g4A5h1A0j3B0j7D0k1C0k1D0l6B0l1A0",      // 26
+                  "e1C3f4A0g6A1h1A0j3B0j5C0",                      // 49
                   "e5B0f1A6g3A7h5D0i1B0j7A0j7B0k1A0k2B0l3B0l4C0",  // 50
-                  "e1A6f2A2g4B2h4A2i7B0j3D0j7D0k3A0l6A0",          // 73
+                  "e1A3f2A2g4B2h4A2i7B0j3D0j7D0k3A0l6A0",          // 73
                   "e5B4f1B3g3A3h5A0k1B0k6B0l5A0l3C0",              // 74
                   "e7A1f3C4g1B3h6D0j4B0k8B0k5D0l3C0",              // 97
-                  "e5C2f1C4g6B7h4B2k3D0k5D0l6C0"                   // 98
+                  "e5C2f1C4g6B7h4B0k3D0k5D0l6C0"                   // 98
           },
   };
 
   static final String[][] MULTI = {
-          { "c1A3d2A6e2C3f3C4g4A7h6D0j2B0j1C0k3C0l4B0l5C0", "a7A7b6A5c1A3d2A6e2C3f3C4g4A7h6D0", "a6A0b6B0c1A3d2A6e2C3f3C4g4A7h6D0"},
+          { "c1A3d2A6e2C3f3C2g4A7h6D0j2B0j1C0k3C0l4B0l5C0", "a7A7b6A5c1A3d2A6e2C3f3C2g4A7h6D0", "a6A0b6B0c1A3d2A6e2C3f3C2g4A7h6D0"},
           { "a6B0b6C0c5A2e4A5f4C2h1A2i7D0j7A0k5B0k5C0l3A0", "a6B0b6C0c5A2d1B3e4A5f4C2g2B3h1A2", "a6B0b6C0c5A2d1B5e4A5f4C2g2B5h1A2"},
   };
 }
