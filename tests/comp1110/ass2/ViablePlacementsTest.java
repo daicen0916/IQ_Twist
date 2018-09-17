@@ -32,10 +32,10 @@ public class ViablePlacementsTest {
   private void test(String start, Set<String> expected) {
     Set<String> outSet = TwistGame.getViablePiecePlacements(start);
     if (expected == null) {
-      if (outSet != null) assertTrue("Expected empty set for input "+start+" but got "+outSet.toString(), outSet == null);
+      if (outSet != null) assertTrue("Expected null for input "+start+" but got "+outSet.toString(), outSet == null);
     } else {
       String expstr = expected.toString();
-      assertTrue("Got an empty set for input " + start + ", but expected " + expstr, outSet != null);
+      assertTrue("Got null for input " + start + ", but expected " + expstr, outSet != null);
       TreeSet<String> out = new TreeSet<>();
       out.addAll(outSet);
       String outstr = out.toString();
@@ -102,7 +102,7 @@ public class ViablePlacementsTest {
   @Test
   public void test4() {
     String start = "c1A3d2A6e2C3f3C4g4A7h6D0i6B0j2B0j1C0k3C0l4B0l5C0";
-    String optstr = "a7A7a6A7a7A1a7A5a7A3a6A0a6B0a6A2a6A4b6A0b7A1b6A2b7A3b7A5b6A7b7A7";
+    String optstr = "a7A7a6A7a7A1a7A5a7A3a6A0a6B0a6A2a6A4b6A0b7A1b7A5b6A7";
     Set<String> options = new TreeSet<>();
     for (int p = 0; p < optstr.length()/4; p++) {
       options.add(optstr.substring(p*4, (p+1)*4));
