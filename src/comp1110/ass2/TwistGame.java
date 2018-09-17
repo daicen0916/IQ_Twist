@@ -212,9 +212,102 @@ public class TwistGame {
    * @return An set of viable piece placements, or null if there are none.
    */
   public static Set<String> getViablePiecePlacements(String placement) {
-
+      if(isPlacementStringValid(placement)==false){
+          return null;
+      }
+      ArrayList<String> GivenPlacement = new ArrayList<>();
+      ArrayList<Character> head=new ArrayList<>();
+      Set<String> viablePiecePlacement=new HashSet<>();
+      // a set of all viable piece placement, it may contains redundant elements.
+      //split given placement string into an array list,and assemble the head char to an array list
+      for (int i=0;i<placement.length()/4;i++){
+          String subPlacement= placement.substring(4*i,4*i+4);
+          GivenPlacement.add(subPlacement);
+          head.add(subPlacement.charAt(0));
+      }
+      //find all the viable piece placement string and put them in a hash set;
+      for(char s0='a';s0<='h';s0++){
+          if(head.contains(s0)){
+              continue;
+          }
+          for(char s1='0';s1<='7';s1++){
+              for(char s2='A';s2<='D';s2++){
+                  for (char s3='0';s3<='7';s3++){
+                      ArrayList<String> tempPlacement= new ArrayList<>(GivenPlacement);
+                      String piecePlacement= ""+s0+s1+s2+s3;
+                      tempPlacement.add(piecePlacement);
+                      Collections.sort(tempPlacement);
+                      String finalPlacement="";
+                      for(String s:tempPlacement){
+                          finalPlacement=finalPlacement+s;
+                      }
+                      if(isPlacementStringValid(finalPlacement)){
+                          viablePiecePlacement.add(piecePlacement);
+                      }
+                  }
+              }
+          }
+      }
+      //remove the redundant element from the result hash set
+      Set<String> result= new HashSet<>(viablePiecePlacement);
+      for(String x:viablePiecePlacement){
+          char[] x1=x.toCharArray();
+          for(String y:viablePiecePlacement){
+              char[] y1= y.toCharArray();
+              // the redundant only appears on some piece, and the first 3 char
+              //of the string must be same. and we need to remove the one with larger rotation.
+              if(x1[3]<y1[3]){
+                  if(x1[0]==y1[0]&&x1[1]==y1[1]&&x1[2]==y1[2]){
+                      switch(x1[0]){
+                          case 'b':
+                              if(x1[3]=='0'&&y1[3]=='2'){
+                                  result.remove(y);}
+                              else if (x1[3]=='1'&&y1[3]=='3'){
+                                  result.remove(y);}
+                              else if (x1[3]=='4'&&y1[3]=='6'){
+                                  result.remove(y);}
+                              else if (x1[3]=='5'&&y1[3]=='7'){
+                                  result.remove(y);}
+                              continue;
+                          case 'c':
+                              if((y1[3]>'3')||(x1[3]=='0'&&y1[3]=='2')||(x1[3]=='1'&&y1[3]=='3'))
+                              {result.remove(y);}
+                              continue;
+                          case 'e':
+                              if(x1[3]=='0'&&y1[3]=='7'){
+                                  result.remove(y);}
+                              else if (x1[3]=='1'&&y1[3]=='4'){
+                                  result.remove(y);}
+                              else if (x1[3]=='2'&&y1[3]=='5'){
+                                  result.remove(y);}
+                              else if (x1[3]=='3'&&y1[3]=='6'){
+                                  result.remove(y);}
+                              continue;
+                          case 'f':
+                              if(x1[3]=='0'&&y1[3]=='6'){
+                                  result.remove(y);}
+                              else if (x1[3]=='1'&&y1[3]=='7'){
+                                  result.remove(y);}
+                              else if (x1[3]=='2'&&y1[3]=='4'){
+                                  result.remove(y);}
+                              else if (x1[3]=='3'&&y1[3]=='5'){
+                                  result.remove(y);}
+                              continue;
+                          case 'h' :
+                              if((y1[3]>'3')||(x1[3]=='0'&&y1[3]=='2')||(x1[3]=='1'&&y1[3]=='3'))
+                              {result.remove(y);}
+                              continue;
+                      }
+                  }
+              }
+          }
+      }
+      //if there is no valid next piece, the is empty, but it doesn't equal to null.
+      if(result.isEmpty()){
+          return null;
+      }
     // FIXME Task 6: determine the set of valid next piece placements
-    return null;
+    return result;
   }
 
 
