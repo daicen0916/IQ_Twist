@@ -78,6 +78,8 @@ public class Viewer extends Application {
      * @param placement  A valid placement string
      */
     void makePlacement(String placement) {
+        //root.getChildren().clear();
+        img.getChildren().clear();
         // split the placement string into a string array;
         String[] placementArray = new String[placement.length()/4];
         for(int i =0;i<placementArray.length;i++){
