@@ -212,9 +212,12 @@ public class TwistGame {
    * @return An set of viable piece placements, or null if there are none.
    */
   public static Set<String> getViablePiecePlacements(String placement) {
+
     // FIXME Task 6: determine the set of valid next piece placements
     return null;
   }
+
+
 
   /**
    * Return an array of all unique solutions for a given starting placement.

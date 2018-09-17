@@ -32,10 +32,10 @@ public class ViablePlacementsTest {
   private void test(String start, Set<String> expected) {
     Set<String> outSet = TwistGame.getViablePiecePlacements(start);
     if (expected == null) {
-      if (outSet != null) assertTrue("Expected empty set for input "+start+" but got "+outSet.toString(), outSet == null);
+      if (outSet != null) assertTrue("Expected null for input "+start+" but got "+outSet.toString(), outSet == null);
     } else {
       String expstr = expected.toString();
-      assertTrue("Got an empty set for input " + start + ", but expected " + expstr, outSet != null);
+      assertTrue("Got null for input " + start + ", but expected " + expstr, outSet != null);
       TreeSet<String> out = new TreeSet<>();
       out.addAll(outSet);
       String outstr = out.toString();
