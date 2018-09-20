@@ -28,6 +28,7 @@ Ziwei Wang: task 4 implement the simple placement viewer- 24 Aug (depends on Tas
 ## Mid-Semester Break
 
 ## Week 7
+Cen Dai: one possible solution of task6.
 
 ## Week 8
 
