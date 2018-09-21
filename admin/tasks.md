@@ -29,6 +29,7 @@ Ziwei Wang: task 4 implement the simple placement viewer- 24 Aug (depends on Tas
 
 ## Week 7
 Cen Dai: one possible solution of task6.
+Pranav Rawat: Tried hands on task 8, can be modified further.
 
 ## Week 8
 
