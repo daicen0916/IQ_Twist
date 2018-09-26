@@ -329,10 +329,83 @@ public class TwistGame {
    * @return An array of strings, each 32-characters long, describing a unique
    * unordered solution to the game given the starting point provided by placement.
    */
-  public static String[] getSolutions(String placement) {
-    // FIXME Task 9: determine all solutions to the game, given a particular starting placement
-    return null;
+  static public ArrayList<String> solutions=new ArrayList<>();
+
+  public static String generatePlacement(String nextpiece,String placement){
+      String s="";
+      int index= placement.length()/4;
+      ArrayList<Character> head= new ArrayList<>();
+      for(int i=0;i<index;i++){
+          head.add(placement.charAt(4*i));
+      }
+      if(nextpiece.charAt(0)<head.get(0)){
+          return nextpiece+placement;
+      }else if(nextpiece.charAt(0)>head.get(index-1)){
+          return placement+nextpiece;
+      }else {
+          for(int i=0;i<index;i++){
+              if(nextpiece.charAt(0)>head.get(i)&&nextpiece.charAt(0)<head.get(i+1)){
+                  s=placement.substring(0,4*i+4)+nextpiece+placement.substring(4*i+4);
+                  return s;
+              }
+          }
+      }
+      return s;
   }
+
+  public static String[] getSolutions(String placement) {
+      //A very very stupid solution of task 9, a common recursion solution should be found
+      //Set<String> tempSolution=new HashSet<>();
+      //Set<String> recurSolution=new HashSet<>();
+      solutions.clear();
+      Set<String>tempSolution=  getViablePiecePlacements(placement);
+      for(String s:tempSolution){
+          String newstring=generatePlacement(s,placement);
+          if(newstring.indexOf('h')==28){
+              solutions.add(newstring.substring(0,32));
+          }else if(getViablePiecePlacements(newstring)!=null){
+              Set<String>temp1=  getViablePiecePlacements(newstring);
+              for (String s1:temp1){
+                  String new1=generatePlacement(s1,newstring);
+                  if(new1.indexOf('h')==28){
+                      solutions.add(new1.substring(0,32));
+                  }else if(getViablePiecePlacements(new1)!=null){
+                      Set<String>temp2=getViablePiecePlacements(new1);
+                      for (String s2:temp2){
+                          String new2=generatePlacement(s2,new1);
+                          if(new2.indexOf('h')==28){
+                              solutions.add(new2.substring(0,32));
+                          }else if(getViablePiecePlacements(new2)!=null){
+                              Set<String> temp3=getViablePiecePlacements(new2);
+                              for(String s3:temp3){
+                                  String new3=generatePlacement(s3,new2);
+                                  if(new3.indexOf('h')==28){
+                                      solutions.add(new3.substring(0,32));
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+
+      }
+      String[] result=new String[solutions.size()];
+      for(int i =0;i<solutions.size();i++){
+          result[i]=solutions.get(i);
+          //System.out.println("result"+i+result[i]);
+      }
+    // FIXME Task 9: determine all solutions to the game, given a particular starting placement
+    return result;
+  }
+//
+//    public static void main(String[] args) {
+//        Set<String> r= new HashSet<>();
+//        r=getViablePiecePlacements("a7A7c1A3d2A6e2C3f3C2g4A7h6D0j2B0j1C0k3C0l4B0l5C0");
+//        for(String s:r){
+//            System.out.println(s);
+//        }
+//    }
 
   //public static void InitializeBoard() //get a objective then initialize the board
 

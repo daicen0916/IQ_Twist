@@ -78,7 +78,7 @@ public class Viewer extends Application {
      * @param placement  A valid placement string
      */
     void makePlacement(String placement) {
-        //root.getChildren().clear();
+        root.getChildren().remove(img);
         img.getChildren().clear();
         // split the placement string into a string array;
         String[] placementArray = new String[placement.length()/4];
@@ -124,7 +124,9 @@ public class Viewer extends Application {
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+                //root.getChildren().remove(img);
                 makePlacement(textField.getText());
+
                 textField.clear();
             }
         });
