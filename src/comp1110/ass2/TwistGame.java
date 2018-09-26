@@ -249,10 +249,20 @@ public class TwistGame {
           }
       }
       //remove the redundant element from the result hash set
-      Set<String> result= new HashSet<>(viablePiecePlacement);
-      for(String x:viablePiecePlacement){
+      Set<String> result=removeRedundant(viablePiecePlacement);
+      //if there is no valid next piece, the is empty, but it doesn't equal to null.
+      if(result.isEmpty()){
+          return null;
+      }
+    // FIXME Task 6: determine the set of valid next piece placements
+    return result;
+  }
+
+  public static Set<String> removeRedundant(Set<String> placementSet){
+      Set<String> result= new HashSet<>(placementSet);
+      for(String x:placementSet){
           char[] x1=x.toCharArray();
-          for(String y:viablePiecePlacement){
+          for(String y:placementSet){
               char[] y1= y.toCharArray();
               // the redundant only appears on some piece, and the first 3 char
               //of the string must be same. and we need to remove the one with larger rotation.
@@ -302,14 +312,8 @@ public class TwistGame {
               }
           }
       }
-      //if there is no valid next piece, the is empty, but it doesn't equal to null.
-      if(result.isEmpty()){
-          return null;
-      }
-    // FIXME Task 6: determine the set of valid next piece placements
-    return result;
+      return result;
   }
-
 
 
   /**
@@ -330,6 +334,7 @@ public class TwistGame {
    * unordered solution to the game given the starting point provided by placement.
    */
   static public ArrayList<String> solutions=new ArrayList<>();
+  //static public int m=0;
 
   public static String generatePlacement(String nextpiece,String placement){
       String s="";
@@ -352,6 +357,46 @@ public class TwistGame {
       }
       return s;
   }
+  // Cen Dai u6266023
+
+  public static String remove(String piece,String placement){
+      int index=placement.indexOf(piece.charAt(0));
+      String result= placement.substring(0,index)+placement.substring(index+4);
+      return result;
+  }
+  // Cen Dai u6266023
+
+  public static void recursionSolutions(String placement, int number, Set<String> tempSolution){
+      ArrayList<String> tempArray=new ArrayList<>(tempSolution);
+      if (number<tempArray.size()){
+          if(placement.indexOf('h')==28){
+              solutions.add(placement.substring(0,32));
+//              number++;
+//              String oringinalplacement=remove(tempArray.get(number-1),placement);
+//              if(number<tempSolution.size()){
+//              String input= generatePlacement(tempArray.get(number),oringinalplacement);
+//              recursionSolutions(input,number,tempSolution);}
+          }else if (getViablePiecePlacements(placement)==null){
+//              number++;
+//              String oringinalplacement=remove(tempArray.get(number-1),placement);
+//              if(number<tempSolution.size()){
+//              String input= generatePlacement(tempArray.get(number),oringinalplacement);
+//              recursionSolutions(input,number,tempSolution);}
+          }else {
+              //number++;
+              Set<String> recurSolution=getViablePiecePlacements(placement);
+              ArrayList<String> recurArray=new ArrayList<>(recurSolution);
+              recursionSolutions(generatePlacement(recurArray.get(0),placement),0,recurSolution);
+          }
+          number++;
+          String oringinalplacement=remove(tempArray.get(number-1),placement);
+          if(number<tempSolution.size()){
+              String input= generatePlacement(tempArray.get(number),oringinalplacement);
+              recursionSolutions(input,number,tempSolution);}
+
+      }
+  }
+  //Cen Dai u6266023
 
   public static String[] getSolutions(String placement) {
       //A very very stupid solution of task 9, a common recursion solution should be found
@@ -359,37 +404,42 @@ public class TwistGame {
       //Set<String> recurSolution=new HashSet<>();
       solutions.clear();
       Set<String>tempSolution=  getViablePiecePlacements(placement);
-      for(String s:tempSolution){
-          String newstring=generatePlacement(s,placement);
-          if(newstring.indexOf('h')==28){
-              solutions.add(newstring.substring(0,32));
-          }else if(getViablePiecePlacements(newstring)!=null){
-              Set<String>temp1=  getViablePiecePlacements(newstring);
-              for (String s1:temp1){
-                  String new1=generatePlacement(s1,newstring);
-                  if(new1.indexOf('h')==28){
-                      solutions.add(new1.substring(0,32));
-                  }else if(getViablePiecePlacements(new1)!=null){
-                      Set<String>temp2=getViablePiecePlacements(new1);
-                      for (String s2:temp2){
-                          String new2=generatePlacement(s2,new1);
-                          if(new2.indexOf('h')==28){
-                              solutions.add(new2.substring(0,32));
-                          }else if(getViablePiecePlacements(new2)!=null){
-                              Set<String> temp3=getViablePiecePlacements(new2);
-                              for(String s3:temp3){
-                                  String new3=generatePlacement(s3,new2);
-                                  if(new3.indexOf('h')==28){
-                                      solutions.add(new3.substring(0,32));
-                                  }
-                              }
-                          }
-                      }
-                  }
-              }
-          }
-
-      }
+      //m=0;
+      ArrayList<String> list= new ArrayList<>(tempSolution);
+      String s= list.get(0);
+      recursionSolutions(generatePlacement(s,placement),0,tempSolution);
+//      for(String s:tempSolution){
+//          String newstring=generatePlacement(s,placement);
+//          if(newstring.indexOf('h')==28){
+//              solutions.add(newstring.substring(0,32));
+//          }else if(getViablePiecePlacements(newstring)!=null){
+//              Set<String>temp1=  getViablePiecePlacements(newstring);
+//              for (String s1:temp1){
+//                  String new1=generatePlacement(s1,newstring);
+//                  if(new1.indexOf('h')==28){
+//                      solutions.add(new1.substring(0,32));
+//                  }else if(getViablePiecePlacements(new1)!=null){
+//                      Set<String>temp2=getViablePiecePlacements(new1);
+//                      for (String s2:temp2){
+//                          String new2=generatePlacement(s2,new1);
+//                          if(new2.indexOf('h')==28){
+//                              solutions.add(new2.substring(0,32));
+//                          }else if(getViablePiecePlacements(new2)!=null){
+//                              Set<String> temp3=getViablePiecePlacements(new2);
+//                              for(String s3:temp3){
+//                                  String new3=generatePlacement(s3,new2);
+//                                  if(new3.indexOf('h')==28){
+//                                      solutions.add(new3.substring(0,32));
+//                                  }
+//                              }
+//                          }
+//                      }
+//                  }
+//              }
+//          }
+//
+//      }
+      //Cen Dai u6266023
       String[] result=new String[solutions.size()];
       for(int i =0;i<solutions.size();i++){
           result[i]=solutions.get(i);
@@ -400,9 +450,10 @@ public class TwistGame {
   }
 //
 //    public static void main(String[] args) {
-//        Set<String> r= new HashSet<>();
-//        r=getViablePiecePlacements("a7A7c1A3d2A6e2C3f3C2g4A7h6D0j2B0j1C0k3C0l4B0l5C0");
-//        for(String s:r){
+//
+//        String r="d1B3e4A5f4C2g2B3h1A2i7D0j7A0k5B0k5C0l3A0l3D0";
+//        String[] result= getSolutions(r);
+//        for (String s:result){
 //            System.out.println(s);
 //        }
 //    }
