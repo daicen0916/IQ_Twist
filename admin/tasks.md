@@ -31,6 +31,8 @@ Ziwei Wang: task 4 implement the simple placement viewer- 24 Aug (depends on Tas
 Cen Dai: one possible solution of task6.
 
 ## Week 8
+Cen Dai: 2 solution of task 9. A small fix of task 4. 
+    A simple test for method RemoveRedundant,GeneratePlacement and Remove.   
 
 ## Week 9
 

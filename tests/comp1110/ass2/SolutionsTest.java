@@ -14,8 +14,8 @@ import static comp1110.ass2.TestUtility.SINGLE;
 import static org.junit.Assert.assertTrue;
 
 public class SolutionsTest {
-  @Rule
-  public Timeout globalTimeout = Timeout.millis(20000);
+  //@Rule
+  //public Timeout globalTimeout = Timeout.millis(20000);
 
 
   private void test(String start, Set<String> expected) {

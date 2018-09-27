@@ -1,5 +1,6 @@
 package comp1110.ass2;
 
+
 import java.lang.reflect.Array;
 import java.util.*;
 
@@ -211,6 +212,7 @@ public class TwistGame {
    * @param placement A valid placement string (comprised of peg and piece placements)
    * @return An set of viable piece placements, or null if there are none.
    */
+
   public static Set<String> getViablePiecePlacements(String placement) {
       if(isPlacementStringValid(placement)==false){
           return null;
@@ -336,21 +338,21 @@ public class TwistGame {
   static public ArrayList<String> solutions=new ArrayList<>();
   //static public int m=0;
 
-  public static String generatePlacement(String nextpiece,String placement){
+  public static String generatePlacement(String nextPiece,String placement){
       String s="";
       int index= placement.length()/4;
       ArrayList<Character> head= new ArrayList<>();
       for(int i=0;i<index;i++){
           head.add(placement.charAt(4*i));
       }
-      if(nextpiece.charAt(0)<head.get(0)){
-          return nextpiece+placement;
-      }else if(nextpiece.charAt(0)>head.get(index-1)){
-          return placement+nextpiece;
+      if(nextPiece.charAt(0)<head.get(0)){
+          return nextPiece+placement;
+      }else if(nextPiece.charAt(0)>head.get(index-1)){
+          return placement+nextPiece;
       }else {
           for(int i=0;i<index;i++){
-              if(nextpiece.charAt(0)>head.get(i)&&nextpiece.charAt(0)<head.get(i+1)){
-                  s=placement.substring(0,4*i+4)+nextpiece+placement.substring(4*i+4);
+              if(nextPiece.charAt(0)>head.get(i)&&nextPiece.charAt(0)<head.get(i+1)){
+                  s=placement.substring(0,4*i+4)+nextPiece+placement.substring(4*i+4);
                   return s;
               }
           }
@@ -371,27 +373,18 @@ public class TwistGame {
       if (number<tempArray.size()){
           if(placement.indexOf('h')==28){
               solutions.add(placement.substring(0,32));
-//              number++;
-//              String oringinalplacement=remove(tempArray.get(number-1),placement);
-//              if(number<tempSolution.size()){
-//              String input= generatePlacement(tempArray.get(number),oringinalplacement);
-//              recursionSolutions(input,number,tempSolution);}
-          }else if (getViablePiecePlacements(placement)==null){
-//              number++;
-//              String oringinalplacement=remove(tempArray.get(number-1),placement);
-//              if(number<tempSolution.size()){
-//              String input= generatePlacement(tempArray.get(number),oringinalplacement);
-//              recursionSolutions(input,number,tempSolution);}
-          }else {
-              //number++;
+          }
+          else if (getViablePiecePlacements(placement)==null){
+          }
+          else {
               Set<String> recurSolution=getViablePiecePlacements(placement);
               ArrayList<String> recurArray=new ArrayList<>(recurSolution);
               recursionSolutions(generatePlacement(recurArray.get(0),placement),0,recurSolution);
           }
           number++;
-          String oringinalplacement=remove(tempArray.get(number-1),placement);
+          String oringinalPlacement=remove(tempArray.get(number-1),placement);
           if(number<tempSolution.size()){
-              String input= generatePlacement(tempArray.get(number),oringinalplacement);
+              String input= generatePlacement(tempArray.get(number),oringinalPlacement);
               recursionSolutions(input,number,tempSolution);}
 
       }
@@ -400,8 +393,6 @@ public class TwistGame {
 
   public static String[] getSolutions(String placement) {
       //A very very stupid solution of task 9, a common recursion solution should be found
-      //Set<String> tempSolution=new HashSet<>();
-      //Set<String> recurSolution=new HashSet<>();
       solutions.clear();
       Set<String>tempSolution=  getViablePiecePlacements(placement);
       //m=0;
