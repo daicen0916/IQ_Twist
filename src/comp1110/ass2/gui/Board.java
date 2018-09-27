@@ -67,7 +67,7 @@ public class Board extends Application {
         int X = pieceArray[1] - '1';
         int Y = pieceArray[2] - 'A';
 
-        Pieces piece = new Pieces(shape,orientation);
+        //Pieces piece = new Pieces(shape,orientation);
 
         if(0 <= X && X<= 8 && 0 <= Y && Y<= 3 ) {
             return true;

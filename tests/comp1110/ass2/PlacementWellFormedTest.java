@@ -1,8 +1,11 @@
 package comp1110.ass2;
 
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.Timeout;
+
+import java.util.regex.Pattern;
 
 import static comp1110.ass2.TestUtility.GOOD_PLACEMENTS;
 import static org.junit.Assert.assertTrue;
@@ -45,6 +48,7 @@ public class PlacementWellFormedTest {
 
   }
 
+
   @Test
   public void secondCharacterOK() {
     for (int i = 0; i < GOOD_PLACEMENTS[0].length()-4; i+=4) {
@@ -55,6 +59,7 @@ public class PlacementWellFormedTest {
       test("a"+c+"A0", c >= '1' && c <= '8');
     }
   }
+
 
   @Test
   public void thirdCharacterOK() {
@@ -67,12 +72,38 @@ public class PlacementWellFormedTest {
     }
   }
 
+
   @Test
   public void fourthCharacterOK() {
     for (char p = 'a'; p <= 'l'; p++) {
       for (char r = '-'; r <= 'D'; r++)
         test(p+"4A"+r, (p >= 'a' && p <= 'h' && r >= '0' && r <= '7') || (p >= 'i' && p <= 'l' && r == '0'));
   }
+  }
+  @Test
+  public void CharacterOneValidityTest() {
+    Pattern pat= Pattern.compile("[a-l]"); //CHECK BETWEEN A TO L, only accept char
+    Match match=new Match();
+    for (char c = 'Z'; c < 'z'; c++) {
+      test(c+"1A0", pat.matcher(Character.toString(c)).matches());
+    }
+  }
+  @Test
+  public void CharactersecondValidityTest() {
+    Pattern pat=Pattern.compile("[1-8]");
+    for (char c = '0'; c <= '9'; c++) {
+      test("a"+c+"A0", pat.matcher(Character.toString(c)).matches());
+    }
+  }
+  @Test
+  public void CharacterThreeValidityTest() {
+    Pattern p=Pattern.compile("[A-D]");
+    for (char q = '0'; q <= 'Z'; q++) {
+      test("a4"+q+"1",p.matcher(Character.toString(q)).matches());
+    }
+    for (char c = 'A'; c <= 'D'; c++) {
+      test("a4"+c+"0", Character.isUpperCase(c));
+    }
   }
 
 }
