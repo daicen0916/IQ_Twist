@@ -48,7 +48,7 @@ public class Viewer extends Application {
     private final Group img=new Group();
 
 
-    int[] Rotate(String placement, ImageView image){
+    public int[] Rotate(String placement, ImageView image){
         //the input is a 4 char string. It represents a piece's location and shape
         char[] a = placement.toCharArray();
         int rotate=(a[3]-'0')%4;
@@ -77,8 +77,8 @@ public class Viewer extends Application {
      *
      * @param placement  A valid placement string
      */
-    void makePlacement(String placement) {
-        //root.getChildren().clear();
+    public void makePlacement(String placement) {
+        root.getChildren().remove(img);
         img.getChildren().clear();
         // split the placement string into a string array;
         String[] placementArray = new String[placement.length()/4];
@@ -124,7 +124,9 @@ public class Viewer extends Application {
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+                //root.getChildren().remove(img);
                 makePlacement(textField.getText());
+
                 textField.clear();
             }
         });

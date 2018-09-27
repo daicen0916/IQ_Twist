@@ -32,6 +32,8 @@ Cen Dai: one possible solution of task6.
 Pranav Rawat: Tried hands on task 8, can be modified further.
 
 ## Week 8
+Cen Dai: 2 solution of task 9. A small fix of task 4. 
+    A simple test for method RemoveRedundant,GeneratePlacement and Remove.   
 
 ## Week 9
 
