@@ -2,6 +2,7 @@ package comp1110.ass2.gui;
 
 import comp1110.ass2.Pegs;
 import comp1110.ass2.Pieces;
+import comp1110.ass2.TwistGame;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -15,6 +16,7 @@ import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
 import java.util.Random;
+import java.util.Set;
 
 public class Board extends Application {
     private static final int SQUARE_SIZE = 100;
@@ -84,7 +86,19 @@ public class Board extends Application {
         return (Initialplacement[index]);
     }
     // FIXME Task 10: Implement hints
+     public String Hints(String placement)
+     {
+         String []Solution=TwistGame.getSolutions(placement);
+         Random r=new Random();
+         int index=r.nextInt(15);
+         String Solutionstring=Solution[index];
+         String nextpieces=TwistGame.remove(placement,Solutionstring);
+         Random p=new Random();
+         int index1=r.nextInt(nextpieces.length()/4);
+         String hint=nextpieces.substring(4*index1,4*index1+4);
+         return hint;
 
+     }
     // FIXME Task 11: Generate interesting starting placements
     //mouse press handler
     //check and update Boolean[][] boards then generate false true and null
