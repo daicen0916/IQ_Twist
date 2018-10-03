@@ -65,7 +65,7 @@ public class Pieces {
    int flip;
    int width;
    int height;
-   Pieces(char id, int shapeCode){
+   public Pieces(char id, int shapeCode){
        this.id=id;
        this.shapeCode=shapeCode;
        this.rotate=shapeCode%4;
