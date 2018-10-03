@@ -23,10 +23,10 @@ public class TwistGameUI extends Application {
     }
     public void gameStart(Stage primaryStage) {
         Board board = new Board();
-        while (!board.isPlacementWellFormed()) {
+        //while (!board.isPlacementWellFormed()) {
             // wait user input
             // check and then try to placement
-        }
+        //}
     }
     public static void main(String[] args) {
         launch(args);
