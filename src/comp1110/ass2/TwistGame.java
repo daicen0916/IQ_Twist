@@ -392,47 +392,14 @@ public class TwistGame {
 
       }
   }
-  //Cen Dai u6266023
 
   public static String[] getSolutions(String placement) {
-      //A very very stupid solution of task 9, a common recursion solution should be found
       solutions.clear();
       Set<String>tempSolution=  getViablePiecePlacements(placement);
       //m=0;
       ArrayList<String> list= new ArrayList<>(tempSolution);
       String s= list.get(0);
       recursionSolutions(generatePlacement(s,placement),0,tempSolution);
-//      for(String s:tempSolution){
-//          String newstring=generatePlacement(s,placement);
-//          if(newstring.indexOf('h')==28){
-//              solutions.add(newstring.substring(0,32));
-//          }else if(getViablePiecePlacements(newstring)!=null){
-//              Set<String>temp1=  getViablePiecePlacements(newstring);
-//              for (String s1:temp1){
-//                  String new1=generatePlacement(s1,newstring);
-//                  if(new1.indexOf('h')==28){
-//                      solutions.add(new1.substring(0,32));
-//                  }else if(getViablePiecePlacements(new1)!=null){
-//                      Set<String>temp2=getViablePiecePlacements(new1);
-//                      for (String s2:temp2){
-//                          String new2=generatePlacement(s2,new1);
-//                          if(new2.indexOf('h')==28){
-//                              solutions.add(new2.substring(0,32));
-//                          }else if(getViablePiecePlacements(new2)!=null){
-//                              Set<String> temp3=getViablePiecePlacements(new2);
-//                              for(String s3:temp3){
-//                                  String new3=generatePlacement(s3,new2);
-//                                  if(new3.indexOf('h')==28){
-//                                      solutions.add(new3.substring(0,32));
-//                                  }
-//                              }
-//                          }
-//                      }
-//                  }
-//              }
-//          }
-//
-//      }
       //Cen Dai u6266023
       String[] result=new String[solutions.size()];
       for(int i =0;i<solutions.size();i++){
@@ -442,21 +409,5 @@ public class TwistGame {
     // FIXME Task 9: determine all solutions to the game, given a particular starting placement
     return result;
   }
-//
-//    public static void main(String[] args) {
-//
-//        String r="d1B3e4A5f4C2g2B3h1A2i7D0j7A0k5B0k5C0l3A0l3D0";
-//        String[] result= getSolutions(r);
-//        for (String s:result){
-//            System.out.println(s);
-//        }
-//    }
-
-  //public static void InitializeBoard() //get a objective then initialize the board
-
-
-  // public static void ErrorReport{}
-  //if player place a piece overlap another existing piece or a peg is already in the location and the peg's color and the piece's color are not matched.
-  //This method will throw a warning to the player that his/her behaviour is illegal.
 
 }

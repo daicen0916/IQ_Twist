@@ -12,6 +12,10 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Shape;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Circle;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -31,11 +35,11 @@ public class Board extends Application {
     private static final int PIECE_PANEL_Y=370;
     private static final int PEG_PANEL_X=80;
     private static final int PEG_PANEL_Y=20;
+    private static final int COLUMNS = 8;
+    private static final int ROWS = 4;
     private static final String URI_BASE = "assets/";
-
     private final Group root = new Group();
     private final Group controls = new Group();
-
     private final Group img=new Group();
     private final Group pieces=new Group();
     private final Group VacantPegs = new Group();
@@ -488,7 +492,6 @@ public class Board extends Application {
         int index1=p.nextInt(Solutionstring.length()/4);
         String hint=Solutionstring.substring(4*index1,4*index1+4);
         return hint;
-
     }
 
     // FIXME Task 11: Generate interesting starting placements
@@ -547,26 +550,26 @@ public class Board extends Application {
 //        }
 //    }
 //
-//    /**
-//     * draw the layout
-//     */
-//    private Shape makeGrid() {
-//        Shape shape = new Rectangle((COLUMNS + 1) * SQUARE_SIZE, (ROWS + 1) * SQUARE_SIZE);
-//
-//        for (int y = 0; y < ROWS; y++) {
-//            for (int x = 0; x < COLUMNS; x++) {
-//                Circle circle = new Circle(SQUARE_SIZE / 2);
-//                circle.setCenterX(SQUARE_SIZE / 2);
-//                circle.setCenterY(SQUARE_SIZE / 2);
-//                circle.setTranslateX(x * (SQUARE_SIZE + 5) + SQUARE_SIZE / 4);
-//                circle.setTranslateY(y * (SQUARE_SIZE + 5) + SQUARE_SIZE / 4);
-//                shape = Shape.subtract(shape, circle);
-//            }
-//        }
-//
-//        shape.setFill(Color.BLACK);
-//        return shape;
-//    }
+    /**
+     * draw the layout
+     */
+    private Shape makeGrid() {
+        Shape shape = new Rectangle((COLUMNS + 1) * SQUARE_SIZE, (ROWS + 1) * SQUARE_SIZE);
+
+        for (int y = 0; y < ROWS; y++) {
+            for (int x = 0; x < COLUMNS; x++) {
+                Circle circle = new Circle(SQUARE_SIZE / 2);
+                circle.setCenterX(SQUARE_SIZE / 2);
+                circle.setCenterY(SQUARE_SIZE / 2);
+                circle.setTranslateX(x * (SQUARE_SIZE + 5) + SQUARE_SIZE / 4);
+                circle.setTranslateY(y * (SQUARE_SIZE + 5) + SQUARE_SIZE / 4);
+                shape = Shape.subtract(shape, circle);
+            }
+        }
+
+        shape.setFill(Color.BLACK);
+        return shape;
+    }
 //
 //    private void clearBoard() {
 //        for (int i = 0; i < board.length; i++) {
