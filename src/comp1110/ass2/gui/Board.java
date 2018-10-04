@@ -7,6 +7,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -14,7 +16,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -22,12 +23,14 @@ public class Board extends Application {
     private static final int SQUARE_SIZE = 60;
     private static final int VIEWER_WIDTH = 933;
     private static final int VIEWER_HEIGHT = 700;
-    private static final int PIECE_PANEL_X=30;
-    private static final int PIECE_PANEL_Y=383;
-    private static final int MAIN_PANEL_X=0;
-    private static final int MAIN_PANEL_Y=0;
+    private static final int MAIN_PANEL_X=80;
+    private static final int MAIN_PANEL_Y=110;
     private static final int MAIN_PANEL_WIDTH=480;
     private static final int MAIN_PANEL_HEIGHT=240;
+    private static final int PIECE_PANEL_X=30;
+    private static final int PIECE_PANEL_Y=370;
+    private static final int PEG_PANEL_X=80;
+    private static final int PEG_PANEL_Y=20;
     private static final String URI_BASE = "assets/";
 
     private final Group root = new Group();
@@ -35,6 +38,9 @@ public class Board extends Application {
 
     private final Group img=new Group();
     private final Group pieces=new Group();
+    private final Group VacantPegs = new Group();
+    private static String InitialPlacement="";
+    private static String CurrentPlacement="";
 
     public class Item extends ImageView {
         char id;
@@ -46,7 +52,7 @@ public class Board extends Application {
          */
         Item(char id) {
             this.id=id;
-            if (id > 'h') {
+            if (id > 'l') {
                 throw new IllegalArgumentException("Bad piece: \"" + id + "\"");
             }
             Image pic = new Image(Viewer.class.getResource(URI_BASE + id + ".png").toString());
@@ -68,7 +74,7 @@ public class Board extends Application {
         DraggablePiece(char id) {
             super(id);
             int[] initX={0,210,420,690,0,150,360,570};
-            int[] initY={0,125};
+            int[] initY={0,130};
             rotate=0;
             homeX = PIECE_PANEL_X+initX[id-'a'];
             setLayoutX(homeX);
@@ -105,6 +111,12 @@ public class Board extends Application {
             });
 
         }
+
+        /**
+         * @return return an int array, this array is used to
+         * compensate the layout coordinate shift induced by the
+         * rotate.
+         */
         private int[] snapShift(int roll){
             int rotate=(((roll)%360)/90)%4;
             int[] shift = {0,0}; //shift[0] is x; shift[1] is y
@@ -127,6 +139,10 @@ public class Board extends Application {
             }
             return shift;
         }
+        /**
+         * If current piece is on board, snap it to the nearest
+         * grid of the board. If not, snap it to its home place.
+         */
         private void snapToGrid() {
             if(onBoard()){
                 double viewer_x= getLayoutX();
@@ -134,8 +150,6 @@ public class Board extends Application {
                 int[] shift= snapShift((int)getRotate());
                 double board_x=viewer_x+shift[0]-MAIN_PANEL_X;
                 double board_y=viewer_y+shift[1]-MAIN_PANEL_Y;
-                System.out.println("board x="+board_x);
-                System.out.println("board y="+board_y);
                 int dif= SQUARE_SIZE/3;
                 int column=0;
                 int row=0;
@@ -158,12 +172,24 @@ public class Board extends Application {
                 setLayoutY(viewer_y);
                 int rotate_status= ((((int)getRotate())%360)/90)%4;
                 String piecePlacement=makePiecePlacement(this.id,column,row,rotate_status);
-                System.out.println(row);
-                System.out.println(piecePlacement);
-                //TwistGame.generatePlacement(piecePlacement,);
+                CurrentPlacement=TwistGame.generatePlacement(piecePlacement,CurrentPlacement);
+                UpdateAndCheck();
             }else {
                 snapToHome();
-                //remember to remove the string
+                removePiece();
+            }
+        }
+        /**
+         * Update the current placement string, if put a piece
+         * out of the board.
+         */
+        private void removePiece(){
+            if(!onBoard()){
+                int index=CurrentPlacement.indexOf(this.id);
+                if(index>=0){
+                    CurrentPlacement=CurrentPlacement.substring(0,index)
+                            +CurrentPlacement.substring(index+4);
+                }
             }
         }
         private String makePiecePlacement(char id, int column, int row, int rotate){
@@ -175,8 +201,19 @@ public class Board extends Application {
             String pieceplacement= new String(piece);
             return pieceplacement;
         }
-        private void updatePlacement(){
-
+        /**
+         * Update the current placement string, after a piece is
+         * put on the board. If the game is completed successfully,
+         * give a congratulation message. If the placement is
+         * illegal, give a illegal remind message.
+         */
+        private void UpdateAndCheck(){
+            if(!TwistGame.isPlacementStringValid(CurrentPlacement)){
+                showDialog("Sorry! It's an illegal movement");
+                snapToHome();
+            }else if(CurrentPlacement.length()>=32&&CurrentPlacement.charAt(28)=='h'){
+                System.out.println("Congratulations! You complete this game!");
+            }
         }
 
         /**
@@ -189,7 +226,7 @@ public class Board extends Application {
             setRotate(rotate);
         }
         /**
-         * @return true if the mask is on the board
+         * @return true if the piece is on the board
          */
         private boolean onBoard() {
             int left_margin=MAIN_PANEL_X-SQUARE_SIZE/3;
@@ -213,7 +250,10 @@ public class Board extends Application {
     }
 
 
-
+    /**
+     * make an array list for the input placement string, each element represents
+     * a piece on board.
+     */
     public ArrayList<String> makePlacementList(String placement){
         ArrayList<String> placementList= new ArrayList<>();
         for(int i =0;i<placement.length()/4;i++){
@@ -223,7 +263,7 @@ public class Board extends Application {
     }
 
     /**
-     * Draw a placement in the window, removing any previously drawn one
+     * Draw an initial placement in the window, removing any previously drawn one
      *
      * @param placement  A valid placement string
      */
@@ -251,6 +291,54 @@ public class Board extends Application {
         }
         root.getChildren().add(img);
     }
+    public int CountPegs(char id,String InitialPlacement){
+        int count=0;
+        int index= InitialPlacement.indexOf(id);
+        if(index>0){
+            count++;
+            if(index+4==InitialPlacement.length()){
+                return count;
+            }else if(InitialPlacement.charAt(index+4)==id){
+                count++;
+            }
+        }
+        return count;
+
+    }
+    public void SetVacantPegs(String InitialPlacement){
+        root.getChildren().remove(VacantPegs);
+        VacantPegs.getChildren().clear();
+        if(CountPegs('i',InitialPlacement)==0){
+            Item PegI= new Item('i');
+            PegI.setLayoutX(PEG_PANEL_X);
+            PegI.setLayoutY(PEG_PANEL_Y);
+            VacantPegs.getChildren().add(PegI);
+        }
+        for(char id='j';id<='l';id++){
+            if(CountPegs(id,InitialPlacement)==0){
+                Item Peg1= new Item(id);
+                Item Peg2=new Item(id);
+                Peg1.setLayoutX(PEG_PANEL_X+(2*(int)(id-'i')-1)*SQUARE_SIZE);
+                Peg1.setLayoutY(PEG_PANEL_Y);
+                Peg2.setLayoutX(PEG_PANEL_X+2*(int)(id-'i')*SQUARE_SIZE);
+                Peg2.setLayoutY(PEG_PANEL_Y);
+                VacantPegs.getChildren().add(Peg1);
+                VacantPegs.getChildren().add(Peg2);
+            }else if(CountPegs(id,InitialPlacement)==1){
+                Item Peg= new Item(id);
+                Peg.setLayoutX(PEG_PANEL_X+2*(int)(id-'i')*SQUARE_SIZE);
+                Peg.setLayoutY(PEG_PANEL_Y);
+                VacantPegs.getChildren().add(Peg);
+            }
+        }
+        root.getChildren().add(VacantPegs);
+    }
+
+    /**
+     * set up all the draggable piece for a certain beginning of the game.
+     *
+     * @param placement  A valid placement string
+     */
     public void setDraggablePiece(String placement){
         root.getChildren().remove(pieces);
         pieces.getChildren().clear();
@@ -271,16 +359,17 @@ public class Board extends Application {
 
 
     /**
-     * Create a basic text field for input and a refresh button.
+     * Create a New Game button to setup a new game.
      */
     private void makeControls() {
         Button button = new Button("New Game");
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                String InitialPlacement = "a7A7b6A7d2A6";
-                String CurrentPlacement = InitialPlacement;
+                InitialPlacement=Initialgamestage();
+                CurrentPlacement = InitialPlacement;
                 makeInitialPlacement(InitialPlacement);
+                SetVacantPegs(InitialPlacement);
                 setDraggablePiece(InitialPlacement);
 
             }
@@ -379,7 +468,7 @@ public class Board extends Application {
     public String Initialgamestage() {
         String[] Initialplacement = { "a7A7b6A7", "i5A0", "d1A6j1C0", "c1A3d2A6", "l4B0l5C0", "j1C0k3C0",
                 "h6D0i6B0j2B0", "l5C0", "b6A7i5A0", "k1b0k6B0l5A0l3C0", "g6B7h4B0k3D0", "j4B0k8B0k5D0", "c1A3D2A6",
-                "d7C7j4D0" };
+                "d7B7j4D0" };
         Random r = new Random();
         int index = r.nextInt(15);
         return (Initialplacement[index]);
@@ -389,12 +478,15 @@ public class Board extends Application {
     {
         String []Solution=TwistGame.getSolutions(placement);
         Random r=new Random();
-        int index=r.nextInt(15);
+        int index=r.nextInt(Solution.length);
         String Solutionstring=Solution[index];
-        String nextpieces=TwistGame.remove(placement,Solutionstring);
+        for(int i=0;i<placement.length()/4;i++){
+            String CurrentPiece= placement.substring(4*i,4*i+4);
+            Solutionstring=TwistGame.remove(CurrentPiece,Solutionstring);
+        }
         Random p=new Random();
-        int index1=r.nextInt(nextpieces.length()/4);
-        String hint=nextpieces.substring(4*index1,4*index1+4);
+        int index1=p.nextInt(Solutionstring.length()/4);
+        String hint=Solutionstring.substring(4*index1,4*index1+4);
         return hint;
 
     }
@@ -547,13 +639,13 @@ public class Board extends Application {
 //        input.getChildren().add(btnremove);
 //    }
 //
-//    private void showDialog(String msg) {
-//        Alert alert = new Alert(AlertType.INFORMATION);
-//        alert.setTitle("Message");
-//        alert.setHeaderText(null);
-//        alert.setContentText(msg);
-//        alert.showAndWait();
-//    }
+    private void showDialog(String msg) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Message");
+        alert.setHeaderText(null);
+        alert.setContentText(msg);
+        alert.showAndWait();
+    }
 //
 //    @Override
 //    public void start(Stage primaryStage) throws Exception {

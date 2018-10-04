@@ -362,8 +362,11 @@ public class TwistGame {
   // Cen Dai u6266023
 
   public static String remove(String piece,String placement){
+      String result= placement;
       int index=placement.indexOf(piece.charAt(0));
-      String result= placement.substring(0,index)+placement.substring(index+4);
+      if(index>=0) {
+          result = placement.substring(0, index) + placement.substring(index + 4);
+      }
       return result;
   }
   // Cen Dai u6266023
