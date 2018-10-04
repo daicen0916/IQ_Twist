@@ -1,9 +1,11 @@
-Reviewer: Mary Jones (u2345678)
-Component: <...>
-Author: Bob Smith (u3456789)
+
+Reviewer: Ziwei Wang (u6787586)
+Component: <TwistGame.java><Function Name: isPlacementWellFormed>
+                           <isPlacementStringWellFormed>
+Author: Pranav Rawat (u6637058)
 
 Review Comments:
 
-1. HelloWorld.java:1-16 Use proper capitalization.
-2. HelloWorldTest.java:21 This test will pass with "hello world", when it should fail.
-3. <...>
+1.<TwistGame.java><Function Name: isPlacementWellFormed> using a simple and effective method to check pieces
+                                                 placement is well-formed or not.
+2.<TwistGame.java><sPlacementStringWellForm
