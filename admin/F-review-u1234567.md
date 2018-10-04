@@ -1,4 +1,3 @@
-
 Reviewer: Ziwei Wang (u6787586)
 Component: <TwistGame.java><Function Name: isPlacementWellFormed>
                            <isPlacementStringWellFormed>
