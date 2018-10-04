@@ -473,6 +473,7 @@ public class Board extends Application {
         int index = r.nextInt(15);
         return (Initialplacement[index]);
     }
+    //Code by Pranav Rawat(u6637058)
     // FIXME Task 10: Implement hints
     public String Hints(String placement)
     {
@@ -490,6 +491,7 @@ public class Board extends Application {
         return hint;
 
     }
+    //Code by Pranav Rawat & Cen Dai
 
     // FIXME Task 11: Generate interesting starting placements
     // mouse press handler
