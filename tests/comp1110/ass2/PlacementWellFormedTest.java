@@ -105,5 +105,4 @@ public class PlacementWellFormedTest {
       test("a4"+c+"0", Character.isUpperCase(c));
     }
   }
-
 }
