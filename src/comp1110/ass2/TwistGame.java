@@ -198,6 +198,7 @@ public class TwistGame {
     // FIXME Task 5: determine whether a placement string is valid
     return true;
   }
+  //Author: Cen Dai u6266023
 
   /**
    * Given a string describing a placement of pieces and pegs, return a set
@@ -317,7 +318,7 @@ public class TwistGame {
       }
       return result;
   }
-
+// A solution of task 6 made by Cen Dai u6266023
 
   /**
    * Return an array of all unique solutions for a given starting placement.
@@ -410,5 +411,5 @@ public class TwistGame {
     // FIXME Task 9: determine all solutions to the game, given a particular starting placement
     return result;
   }
-
+// A recursive solution of task 9-- Cen Dai u6266023
 }

@@ -43,6 +43,7 @@ public class Board extends Application {
     private final Group img=new Group();
     private final Group pieces=new Group();
     private final Group VacantPegs = new Group();
+    private final Group BackGround= new Group();
     private static String InitialPlacement="";
     private static String CurrentPlacement="";
 
@@ -385,11 +386,24 @@ public class Board extends Application {
         hb.setLayoutY(VIEWER_HEIGHT - 50);
         controls.getChildren().add(hb);
     }
+    private void makeBackGround(){
+        BackGround.getChildren().clear();
 
+        ImageView baseboard = new ImageView();
+        baseboard.setImage(new Image(Viewer.class.getResource(URI_BASE + "board" + ".png").toString()));
+        baseboard.setFitWidth(MAIN_PANEL_WIDTH);
+        baseboard.setFitHeight(MAIN_PANEL_HEIGHT);
+        baseboard.setLayoutX(MAIN_PANEL_X);
+        baseboard.setLayoutY(MAIN_PANEL_Y);
+        BackGround.getChildren().add(baseboard);
+        BackGround.toBack();
+        root.getChildren().add(BackGround);
+    }
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("IQ-TWIST");
         Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
+        makeBackGround();
         root.getChildren().add(controls);
         makeControls();
         primaryStage.setScene(scene);
@@ -474,7 +488,7 @@ public class Board extends Application {
                 "h6D0i6B0j2B0", "l5C0", "b6A7i5A0", "k1b0k6B0l5A0l3C0", "g6B7h4B0k3D0", "j4B0k8B0k5D0", "c1A3D2A6",
                 "d7B7j4D0" };
         Random r = new Random();
-        int index = r.nextInt(15);
+        int index = r.nextInt(14);
         return (Initialplacement[index]);
     }
     //Code by Pranav Rawat(u6637058)
