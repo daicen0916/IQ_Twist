@@ -1,9 +1,6 @@
 We declare that the work we have submitted for Stage F of this assignment and all stages before it is entirely our own work, with the following documented exceptions:
 
-* The idea of using <...> to make the game run faster came from a discussion with <...> (noted in source code comments)
+* The syntax of code for Pattern Matcher used in class PlacementWellFormed.java uses an idea suggested on https://stackoverflow.com/questions/26767866/java-pattern-matcher
 
-* The code in class <...> is based on a solution we found when researching the problem (URL provided in source code comments)
 
-* ....
-
-Signed: Mary Jones (u2345678), Bob Smith (u3456789), and Sue Black (u0123456)
+Signed: Pranav Rawat (U6637058), Cen dai(U6266023), and Ziwei Wang (U6787586)
