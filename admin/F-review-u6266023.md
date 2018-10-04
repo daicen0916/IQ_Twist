@@ -1,5 +1,6 @@
 Reviewer: Cen Dai (u6266023)
-Component: <...>
+Component: <Board.java;Function name: MakeGrid, showDialog>
+            <PieceRotateTest>
 Author: Ziwei Wang (u6787586)
 
 
