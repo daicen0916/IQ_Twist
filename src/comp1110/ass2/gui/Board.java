@@ -375,8 +375,8 @@ public class Board extends Application {
      * Create a New Game button to setup a new game.
      */
     private void makeControls() {
-        Button button = new Button("New Game");
-        button.setOnAction(new EventHandler<ActionEvent>() {
+        Button newGame = new Button("New Game");
+        newGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
                 InitialPlacement=Initialgamestage();
@@ -387,8 +387,17 @@ public class Board extends Application {
 
             }
         });
+        Button ResetGame =new Button("Reset");
+        ResetGame.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                makeInitialPlacement(InitialPlacement);
+                SetVacantPegs(InitialPlacement);
+                setDraggablePiece(InitialPlacement);
+            }
+        });
         HBox hb = new HBox();
-        hb.getChildren().addAll(button);
+        hb.getChildren().addAll(newGame,ResetGame);
         hb.setSpacing(10);
         hb.setLayoutX(130);
         hb.setLayoutY(VIEWER_HEIGHT - 50);
