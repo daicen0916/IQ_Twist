@@ -412,4 +412,7 @@ public class TwistGame {
     return result;
   }
 // A recursive solution of task 9-- Cen Dai u6266023
+//public static void main(String[] args) {
+//    System.out.println(isPlacementStringValid("a4A7b6A7i5A0"));
+//}
 }

@@ -80,7 +80,7 @@ public class Board extends Application {
             super(id);
             int[] initX={0,210,420,690,0,150,360,570};
             int[] initY={0,130};
-            rotate=0;
+            this.rotate=0;
             homeX = PIECE_PANEL_X+initX[id-'a'];
             setLayoutX(homeX);
             homeY = PIECE_PANEL_Y+initY[(id-'a')/4];
@@ -113,6 +113,7 @@ public class Board extends Application {
             });
             setOnMouseReleased(event -> {     // drag is complete
                 snapToGrid();
+                UpdateAndCheck();
             });
 
         }
@@ -175,10 +176,15 @@ public class Board extends Application {
                 viewer_y=real_y-shift[1];
                 setLayoutX(viewer_x);
                 setLayoutY(viewer_y);
-                int rotate_status= ((((int)getRotate())%360)/90)%4;
+                int rotate_status=0;
+                if(getScaleY()==1){
+                    rotate_status=(int)getRotate()/90;
+                }else if(getScaleY()==-1){
+                    rotate_status=(int)getRotate()/90+4;
+                }
                 String piecePlacement=makePiecePlacement(this.id,column,row,rotate_status);
+                removePiece();
                 CurrentPlacement=TwistGame.generatePlacement(piecePlacement,CurrentPlacement);
-                UpdateAndCheck();
             }else {
                 snapToHome();
                 removePiece();
@@ -189,13 +195,11 @@ public class Board extends Application {
          * out of the board.
          */
         private void removePiece(){
-            if(!onBoard()){
                 int index=CurrentPlacement.indexOf(this.id);
                 if(index>=0){
                     CurrentPlacement=CurrentPlacement.substring(0,index)
                             +CurrentPlacement.substring(index+4);
                 }
-            }
         }
         private String makePiecePlacement(char id, int column, int row, int rotate){
             char[] piece= new char[4];
@@ -215,9 +219,10 @@ public class Board extends Application {
         private void UpdateAndCheck(){
             if(!TwistGame.isPlacementStringValid(CurrentPlacement)){
                 showDialog("Sorry! It's an illegal movement");
+                removePiece();
                 snapToHome();
             }else if(CurrentPlacement.length()>=32&&CurrentPlacement.charAt(28)=='h'){
-                System.out.println("Congratulations! You complete this game!");
+                showDialog("Congratulations! You complete this game!");
             }
         }
 
@@ -243,8 +248,15 @@ public class Board extends Application {
             int[] shift= snapShift((int)getRotate());
             double real_x=viewer_x+shift[0];
             double real_y=viewer_y+shift[1];
-            double right_location=real_x+this.getFitWidth();
-            double bottom_location=real_y+this.getFitHeight();
+            double right_location,bottom_location;
+            if((int)getRotate()/90%2==1) {
+                right_location = real_x + this.getFitHeight();
+                bottom_location=real_y+this.getFitWidth();
+            }
+            else {
+                right_location=real_x+this.getFitWidth();
+                bottom_location=real_y+this.getFitHeight();
+            }
             if(real_x<left_margin||real_y<top_margin||right_location>right_margin||bottom_location>bottom_margin){
                 return false;
             }else {
@@ -298,12 +310,8 @@ public class Board extends Application {
     }
     public int CountPegs(char id,String InitialPlacement){
         int count=0;
-        int index= InitialPlacement.indexOf(id);
-        if(index>0){
-            count++;
-            if(index+4==InitialPlacement.length()){
-                return count;
-            }else if(InitialPlacement.charAt(index+4)==id){
+        for(int i=0;i<InitialPlacement.length()/4;i++){
+            if(InitialPlacement.charAt(4*i)==id){
                 count++;
             }
         }
@@ -486,9 +494,9 @@ public class Board extends Application {
     public String Initialgamestage() {
         String[] Initialplacement = { "a7A7b6A7", "i5A0", "d1A6j1C0", "c1A3d2A6", "l4B0l5C0", "j1C0k3C0",
                 "h6D0i6B0j2B0", "l5C0", "b6A7i5A0", "k1b0k6B0l5A0l3C0", "g6B7h4B0k3D0", "j4B0k8B0k5D0", "c1A3D2A6",
-                "d7B7j4D0" };
+                "d7B7j4D0","b6A7c1A3d2A6e2C3g4A7h6D0i6B0j2B0j1C0k3C0l4B0l5C0" };
         Random r = new Random();
-        int index = r.nextInt(14);
+        int index = r.nextInt(15);
         return (Initialplacement[index]);
     }
     //Code by Pranav Rawat(u6637058)
