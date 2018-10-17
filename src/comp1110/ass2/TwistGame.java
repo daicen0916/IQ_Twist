@@ -165,7 +165,6 @@ public class TwistGame {
             if(pieces.points[m][n]==null){
               continue;
             }
-            //check if the entire piece is on board.
             if((row+m)>3||(column+n)>7){
               return false;
             }
@@ -217,9 +216,9 @@ public class TwistGame {
    */
 
   public static Set<String> getViablePiecePlacements(String placement) {
-//      if(isPlacementStringValid(placement)==false){
-//          return null;
-//      }
+      if(isPlacementStringValid(placement)==false){
+          return null;
+      }
       ArrayList<String> GivenPlacement = new ArrayList<>();
       ArrayList<Character> head=new ArrayList<>();
       Set<String> viablePiecePlacement=new HashSet<>();
@@ -235,7 +234,7 @@ public class TwistGame {
           if(head.contains(s0)){
               continue;
           }
-          for(char s1='1';s1<='8';s1++){
+          for(char s1='0';s1<='7';s1++){
               for(char s2='A';s2<='D';s2++){
                   for (char s3='0';s3<='7';s3++){
                       ArrayList<String> tempPlacement= new ArrayList<>(GivenPlacement);
@@ -413,14 +412,10 @@ public class TwistGame {
     return result;
   }
 // A recursive solution of task 9-- Cen Dai u6266023
-//public static void main(String[] args) {
-//    System.out.println(isPlacementStringValid("a4A7b6A7i5A0"));
-//}
 public static void main(String[] args) {
-      Set<String> firstpiece = getViablePiecePlacements("");
-      for (String s :firstpiece){
-          System.out.println(s);
-      }
+    HashSet<String> firstpiece = new HashSet<>();
+    firstpiece= (HashSet)getViablePiecePlacements("");
     System.out.println(firstpiece.size());
+
 }
 }

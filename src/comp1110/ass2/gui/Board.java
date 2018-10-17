@@ -33,7 +33,7 @@ public class Board extends Application {
     private static final int MAIN_PANEL_HEIGHT=240;
     private static final int PIECE_PANEL_X=30;
     private static final int PIECE_PANEL_Y=370;
-    private static final int PEG_PANEL_X=80;
+    private static final int PEG_PANEL_X=110;
     private static final int PEG_PANEL_Y=20;
     private static final int COLUMNS = 8;
     private static final int ROWS = 4;
@@ -391,8 +391,9 @@ public class Board extends Application {
         ResetGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                makeInitialPlacement(InitialPlacement);
-                SetVacantPegs(InitialPlacement);
+                CurrentPlacement=InitialPlacement;
+//                makeInitialPlacement(InitialPlacement);
+//                SetVacantPegs(InitialPlacement);
                 setDraggablePiece(InitialPlacement);
             }
         });
@@ -405,7 +406,6 @@ public class Board extends Application {
     }
     private void makeBackGround(){
         BackGround.getChildren().clear();
-
         ImageView baseboard = new ImageView();
         baseboard.setImage(new Image(Viewer.class.getResource(URI_BASE + "board" + ".png").toString()));
         baseboard.setFitWidth(MAIN_PANEL_WIDTH);
