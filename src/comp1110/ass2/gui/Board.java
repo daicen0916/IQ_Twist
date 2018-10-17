@@ -195,11 +195,11 @@ public class Board extends Application {
          * out of the board.
          */
         private void removePiece(){
-                int index=CurrentPlacement.indexOf(this.id);
-                if(index>=0){
-                    CurrentPlacement=CurrentPlacement.substring(0,index)
-                            +CurrentPlacement.substring(index+4);
-                }
+            int index=CurrentPlacement.indexOf(this.id);
+            if(index>=0){
+                CurrentPlacement=CurrentPlacement.substring(0,index)
+                        +CurrentPlacement.substring(index+4);
+            }
         }
         private String makePiecePlacement(char id, int column, int row, int rotate){
             char[] piece= new char[4];
@@ -603,7 +603,7 @@ public class Board extends Application {
         shape.setFill(Color.BLACK);
         return shape;
     }
-//
+    //
 //    private void clearBoard() {
 //        for (int i = 0; i < board.length; i++) {
 //            for (int j = 0; j < board[i].length; j++) {
