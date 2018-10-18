@@ -63,8 +63,8 @@ public class Pieces {
    int shapeCode;
    int rotate;
    int flip;
-   int width;
-   int height;
+   public int width;
+   public int height;
    public Pieces(char id, int shapeCode){
        this.id=id;
        this.shapeCode=shapeCode;

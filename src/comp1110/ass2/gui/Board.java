@@ -1,5 +1,6 @@
 package comp1110.ass2.gui;
 
+import comp1110.ass2.Nodes;
 import comp1110.ass2.Pieces;
 import comp1110.ass2.TwistGame;
 import javafx.application.Application;
@@ -7,11 +8,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.Rectangle;
@@ -35,6 +33,10 @@ public class Board extends Application {
     private static final int PIECE_PANEL_Y=370;
     private static final int PEG_PANEL_X=110;
     private static final int PEG_PANEL_Y=20;
+    private static final int COLUMN_PANEL_X=80;
+    private static final int COLUMN_PANEL_Y=80;
+    private static final int ROW_PANEL_X=50;
+    private static final int ROW_PANEL_Y=110;
     private static final int COLUMNS = 8;
     private static final int ROWS = 4;
     private static final String URI_BASE = "assets/";
@@ -79,8 +81,8 @@ public class Board extends Application {
          */
         DraggablePiece(char id) {
             super(id);
-            int[] initX={0,210,420,690,0,150,360,570};
-            int[] initY={20,20,0,0,140,140,130,130};
+            int[] initX={0,210,440,690,0,150,360,560};
+            int[] initY={20,20,50,0,180,180,130,180};
             this.rotate=0;
             homeX = PIECE_PANEL_X+initX[id-'a'];
             setLayoutX(homeX);
@@ -397,11 +399,21 @@ public class Board extends Application {
      * Create a New Game button to setup a new game.
      */
     private void makeControls() {
+        ComboBox level = new ComboBox();
+        level.getItems().add("Easy");
+        level.getItems().add("Medium");
+        level.getItems().add("Hard");
+        level.setLayoutX(750);
+        level.setLayoutY(80);
         Button newGame = new Button("New Game");
+        //System.out.println(newGame.getLayoutX());
+        newGame.setLayoutX(750);
+        newGame.setLayoutY(150);
         newGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                InitialPlacement=Initialgamestage();
+                String difficulty = (String) level.getValue();
+                InitialPlacement=setStart(Initialgamestage(),difficulty);
                 CurrentPlacement = InitialPlacement;
                 makeInitialPlacement(InitialPlacement);
                 SetVacantPegs(InitialPlacement);
@@ -410,6 +422,8 @@ public class Board extends Application {
             }
         });
         Button ResetGame =new Button("Reset");
+        ResetGame.setLayoutX(750);
+        ResetGame.setLayoutY(200);
         ResetGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -422,6 +436,8 @@ public class Board extends Application {
             }
         });
         Button Hint =new Button("Hint");
+        Hint.setLayoutX(750);
+        Hint.setLayoutY(250);
         Hint.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -440,22 +456,30 @@ public class Board extends Application {
                 MakeHint(hints);}
             }
         });
-        HBox hb = new HBox();
-        hb.getChildren().addAll(newGame,ResetGame,Hint);
-        hb.setSpacing(10);
-        hb.setLayoutX(130);
-        hb.setLayoutY(VIEWER_HEIGHT - 50);
-        controls.getChildren().add(hb);
+        controls.getChildren().addAll(newGame,ResetGame,Hint,level);
     }
     private void makeBackGround(){
         BackGround.getChildren().clear();
         ImageView baseboard = new ImageView();
+        ImageView pegboard = new ImageView();
+        ImageView columnlable = new ImageView();
+        ImageView rowlable = new ImageView();
         baseboard.setImage(new Image(Viewer.class.getResource(URI_BASE + "board" + ".png").toString()));
-        baseboard.setFitWidth(MAIN_PANEL_WIDTH);
-        baseboard.setFitHeight(MAIN_PANEL_HEIGHT);
+        pegboard.setImage(new Image(Viewer.class.getResource(URI_BASE + "pegboard" + ".png").toString()));
+        columnlable.setImage(new Image(Viewer.class.getResource(URI_BASE + "columnlable" + ".png").toString()));
+        rowlable.setImage(new Image(Viewer.class.getResource(URI_BASE + "rowlable" + ".png").toString()));
+//        baseboard.setFitWidth(MAIN_PANEL_WIDTH);
+//        baseboard.setFitHeight(MAIN_PANEL_HEIGHT);
         baseboard.setLayoutX(MAIN_PANEL_X);
         baseboard.setLayoutY(MAIN_PANEL_Y);
-        BackGround.getChildren().add(baseboard);
+        pegboard.setLayoutX(PEG_PANEL_X);
+        pegboard.setLayoutY(PEG_PANEL_Y);
+        columnlable.setLayoutX(COLUMN_PANEL_X);
+        columnlable.setLayoutY(COLUMN_PANEL_Y);
+        rowlable.setLayoutX(ROW_PANEL_X);
+        rowlable.setLayoutY(ROW_PANEL_Y);
+        BackGround.getChildren().addAll(baseboard,pegboard,
+                columnlable,rowlable);
         BackGround.toBack();
         root.getChildren().add(BackGround);
     }
@@ -472,11 +496,20 @@ public class Board extends Application {
 
     // FIXME Task 8: Implement starting placements
     public String Initialgamestage() {
-        String[] Initialplacement = { "a7A7b6A7", "i5A0", "d1A6j1C0", "c1A3d2A6", "l4B0l5C0", "j1C0k3C0",
-                "h6D0i6B0j2B0", "l5C0", "b6A7i5A0", "k1b0k6B0l5A0l3C0", "g6B7h4B0k3D0", "j4B0k8B0k5D0", "c1A3D2A6",
-                "d7B7j4D0","d2A6e2C3g4A7h6D0i6B0j2B0j1C0k3C0l4B0l5C0" };
+        String[] Initialplacement = {
+                "a7A7b6A7c1A3d2A6e2C3f3C2g4A7h6D0",
+                "a6B0b6C0c5A2d1B3e4A5f4C2g2B3h1A2",
+                "a6A0b4A2c3A3d1A3e1C4f4B3g6B2h5D0",
+                "a4C4b2C4c1B2d7B1e1C6f6A0g4A5h1A0",
+                "a7B1b2C4c1B2d4C4e1C3f4A0g6A1h1A0",
+                "a1B5b2C0c5A2d7B7e5B0f1A6g3A7h5D0",
+                "a1C6b6A6c2D0d7B1e1A3f2A2g4B2h4A2",
+                "a6C4b7A1c2D0d1A0e5B4f1B3g3A3h5A0",
+                "a1A3b5A4c5C0d3A6e7A1f3C4g1B3h6D0",
+                "a7A7b3B5c3A0d1A3e5C2f1C4g6B7h4B0"
+        };
         Random r = new Random();
-        int index = r.nextInt(15);
+        int index = r.nextInt(10);
         return (Initialplacement[index]);
     }
     //Code by Pranav Rawat(u6637058)
@@ -527,5 +560,78 @@ public class Board extends Application {
         alert.setContentText(msg);
         alert.showAndWait();
     }
+    private String setStart(String Initial, String level) {
+        String startstage="";
+        Nodes[][] Board = new Nodes[4][8];
+        //Split the placement string into a String array. Each element is a 4 char placement string
+        String[] placementArray = new String[Initial.length() / 4];
+        for (int i = 0; i < Initial.length() / 4; i++) {
+            placementArray[i] = Initial.substring(4 * i, 4 * i + 4);
+        }
+        for (int i = 0; i < placementArray.length; i++) {
+            char[] temp = placementArray[i].toCharArray();
+            int row = temp[2] - 'A';
+            int column = temp[1] - '1';
+            // if the string represents a piece, do the following things
+            if (temp[0] >= 'a' && temp[0] <= 'h') {
+                Pieces pieces = new Pieces(temp[0], temp[3] - '0');
+                for (int m = 0; m < pieces.height; m++) {
+                    for (int n = 0; n < pieces.width; n++) {
+                        if (pieces.points[m][n] == null) {
+                            continue;
+                        }
+                        if (Board[row + m][column + n] == null) {
+                            Board[row + m][column + n] = new Nodes(null, pieces.points[m][n]);
+                        }
+                    }
+                }
+            }
+        }
+        ArrayList<String> peglist = new ArrayList<>();
+        for(int row=0;row<4;row++){
+            for (int column=0;column<8;column++){
+                if (Board[row][column].point.hole){
+                    comp1110.ass2.Color pegColor = Board[row][column].point.getColor();
+                    char p0='i';
+                    switch(pegColor){
+                        case Red:
+                            p0='i';
+                            break;
+                        case Blue:
+                            p0='j';
+                            break;
+                        case Green:
+                            p0='k';
+                            break;
+                        case Yellow:
+                            p0='l';
+                            break;
 
+                    }
+                    char p1= (char)(column+'1');
+                    char p2=(char)(row+'A');
+                    char p3='0';
+                    char[] pegplacement ={p0,p1,p2,p3};
+                    String pegstring =new String(pegplacement);
+                    peglist.add(pegstring);
+                }
+            }
+        }
+        switch (level){
+            case "Easy":
+                startstage=Initial.substring(0,4)+
+                        Initial.substring(8,12)+Initial.substring(28,32)+peglist.get(2)+peglist.get(4);
+                break;
+            case "Medium":
+                startstage=Initial.substring(0,4)+
+                        Initial.substring(8,12)+peglist.get(2)+peglist.get(4);
+                break;
+            case "Hard":
+                startstage=Initial.substring(0,4)+
+                        Initial.substring(8,12)+peglist.get(2);
+                break;
+        }
+
+        return startstage;
+    }
 }
