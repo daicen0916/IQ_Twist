@@ -382,6 +382,7 @@ public class TwistGame {
           else if (getViablePiecePlacements(placement)==null){
           }
           else {
+              //go deeply
               Set<String> recurSolution=getViablePiecePlacements(placement);
               ArrayList<String> recurArray=new ArrayList<>(recurSolution);
               recursionSolutions(generatePlacement(recurArray.get(0),placement),0,recurSolution);
@@ -389,6 +390,7 @@ public class TwistGame {
           number++;
           String oringinalPlacement=remove(tempArray.get(number-1),placement);
           if(number<tempSolution.size()){
+              //go widely
               String input= generatePlacement(tempArray.get(number),oringinalPlacement);
               recursionSolutions(input,number,tempSolution);}
 

@@ -36,6 +36,9 @@ Cen Dai: 2 solution of task 9. A small fix of task 4.
     A simple test for method RemoveRedundant,GeneratePlacement and Remove.   
 
 ## Week 9
+Cen Dai: task 4,5,6,7,9,10,a partial solution of 11.
+Pranav Rawat: task 2, 3, 6,8,10
+Viki Wang: task 7,4,5
 
 ## Week 10
 

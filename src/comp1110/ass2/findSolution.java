@@ -7,10 +7,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class findSolution {
-    static ArrayList<String> firstPieceList= getFirstPiece();
-    static int RowNumber = firstPieceList.size();
-    static HashMap<Integer,DLNode> NodeNet = MakeAMatrix();
-    static Integer HeadKey= -99;
+
+
+    static final ArrayList<String> firstPieceList= getFirstPiece();
+    static final int RowNumber = firstPieceList.size();
+    static final HashMap<Integer,DLNode> NodeNet = MakeAMatrix();
+    static final Integer HeadKey= -99;
+    static HashSet<String> SolutionSet= new HashSet<>();
+    static ArrayList<Integer> answer=new ArrayList<>();
+
+
     public static ArrayList<String> getFirstPiece(){
         HashSet<String> firstPieceSet = new HashSet<>();
         for(int i =0;i<=7737;i++){
@@ -31,14 +37,15 @@ public class findSolution {
             }
 
         }
-        HashSet<String> tempresult= (HashSet<String>) TwistGame.removeRedundant(firstPieceSet);
+        HashSet<String> tempResult= (HashSet<String>) TwistGame.removeRedundant(firstPieceSet);
         ArrayList<String> result = new ArrayList<>();
-        for(String s: tempresult){
+        for(String s: tempResult){
             result.add(s);
         }
         Collections.sort(result);
         return result;
     }
+
     public static int[] setLocationArray(String placement){
         char[] status = placement.toCharArray();
         int rotate = status[3]-'0';
@@ -65,182 +72,299 @@ public class findSolution {
         return locationArray;
     }
 
-static class DLNode{
-        DLNode Up, Down, Left,Right;
-        int Row,Column;
-        String status;
-        boolean filled;
-        DLNode(int Row, int Column){
-            this.Row=Row;
-            this.Column = Column;
-            this.Up=this;
-            this.Down=this;
-            this.Right=this;
-            this.Left=this;
-            this.filled= false;
+    static class DLNode{
+            DLNode Up, Down, Left,Right;
+            int Row,Column;
+            String status;
+            boolean filled;
+            DLNode(int Row, int Column){
+                this.Row=Row;
+                this.Column = Column;
+                this.Up=this;
+                this.Down=this;
+                this.Right=this;
+                this.Left=this;
+                this.filled= false;
+            }
+            void SetUp(DLNode Up){this.Up=Up;}
+            void SetDown(DLNode Down){this.Down=Down;}
+            void SetLeft(DLNode Left) {this.Left=Left;}
+            void SetRight(DLNode Right){this.Right=Right;}
+            void SetStatus(String staus){this.status = staus;}
+            void SetFilled (boolean filled) {this.filled=filled;}
+            void RemoveUpDown(){
+                this.Up.Down=this.Down;
+                this.Down.Up= this.Up;}
+            void RemoveLeftRight(){
+                this.Left.Right=this.Right;
+                this.Right.Left=this.Left;
+            }
+            void RecoverUpDown(){
+                this.Up.Down= this;
+                this.Down.Up=this;
+            }
+            void RecoverLeftRight(){
+                this.Left.Right=this;
+                this.Right.Left=this;
+            }
+    }
+    static public HashMap<Integer,DLNode> MakeAMatrix(){
+            HashMap<Integer,DLNode> NodeMatrix =new HashMap<>();
+            // make a node net
+            for(int row=0;row<firstPieceList.size();row++){
+                for (int column=0;column<40;column++){
+                    int key = row*100+column;
+                    DLNode value = new DLNode(row,column);
+                    NodeMatrix.put(key,value);
+                }
+            }
+            for(int column=-1;column<40;column++){
+                int key = -100-column;
+                DLNode columnHead= new DLNode(-1,column);
+                NodeMatrix.put(key,columnHead);
+            }
+//            DLNode Head = new DLNode(-1,-1);
+//            NodeMatrix.put(HeadKey,Head);
+
+
+        for (int column=-1;column<40;column++){
+            Integer key = -100-column;
+            switch (column){
+                case -1:
+                    NodeMatrix.get(key).Left=NodeMatrix.get(-100-39);
+                    NodeMatrix.get(key).Right=NodeMatrix.get(-100-1);
+                    continue;
+                case 39:
+                    NodeMatrix.get(key).Right = NodeMatrix.get(-99);
+                    NodeMatrix.get(key).Left=NodeMatrix.get(-100-(column-1));
+                    NodeMatrix.get(key).Up=NodeMatrix.get(100*(RowNumber-1)+column);
+                    NodeMatrix.get(key).Down=NodeMatrix.get(column);
+                    continue;
+                default:
+                    NodeMatrix.get(key).Left=NodeMatrix.get(-100-(column-1));
+                    NodeMatrix.get(key).Right=NodeMatrix.get(-100-(column+1));
+                    NodeMatrix.get(key).Up=NodeMatrix.get(100*(RowNumber-1)+column);
+                    NodeMatrix.get(key).Down=NodeMatrix.get(column);
+                    continue;
+            }
         }
-        void SetUp(DLNode Up){this.Up=Up;}
-        void SetDown(DLNode Down){this.Down=Down;}
-        void SetLeft(DLNode Left) {this.Left=Left;}
-        void SetRight(DLNode Right){this.Right=Right;}
-        void SetStatus(String staus){this.status = staus;}
-        void SetFilled (boolean filled) {this.filled=filled;}
-        void Remove(){
-            this.Up.Down=this.Down;
-            this.Down.Up= this.Up;
-            this.Left.Right=this.Right;
-            this.Right.Left=this.Left;
-        }
-        void Recover(){
-            this.Left.Right=this;
-            this.Right.Left=this;
-            this.Up.Down= this;
-            this.Down.Up=this;
-        }
-}
-static public HashMap<Integer,DLNode> MakeAMatrix(){
-        HashMap<Integer,DLNode> NodeMatrix =new HashMap<>();
-        // make a node net
+
         for(int row=0;row<firstPieceList.size();row++){
-            for (int column=0;column<40;column++){
+            for (int column =0;column<40;column++){
                 int key = row*100+column;
-                DLNode value = new DLNode(row,column);
-                NodeMatrix.put(key,value);
+                if (column==0){
+                    int leftkey = row*100+39;
+                    int rightkey= row*100+1;
+                    NodeMatrix.get(key).Left=(NodeMatrix.get(leftkey));
+                    NodeMatrix.get(key).Right=NodeMatrix.get(rightkey);
+                }
+                if(column==39){
+                    int rightkey=row*100;
+                    int leftkey=row*100+38;
+                    NodeMatrix.get(key).Left=NodeMatrix.get(leftkey);
+                    NodeMatrix.get(key).Right=NodeMatrix.get(rightkey);
+                }
+                if (row==0){
+                    int downkey=100+column;
+                    NodeMatrix.get(key).Down=NodeMatrix.get(downkey);
+                    int upkey=-100-column;
+                    NodeMatrix.get(key).Up=NodeMatrix.get(upkey);
+                }
+                if(row==RowNumber-1){
+                    int downkey=-100-column;
+                    int upkey=(RowNumber-2)*100+column;
+                    NodeMatrix.get(key).Up=NodeMatrix.get(upkey);
+                    NodeMatrix.get(key).Down=NodeMatrix.get(downkey);
+                }
+                if (row<RowNumber-1&&row>0&&column>0&&column<39){
+                    int leftkey = row*100+column-1;
+                    int rightkey = row*100+column+1;
+                    int upkey=(row-1)*100+column;
+                    int downkey=(row+1)*100+column;
+                    NodeMatrix.get(key).Up=NodeMatrix.get(upkey);
+                    NodeMatrix.get(key).Down=NodeMatrix.get(downkey);
+                    NodeMatrix.get(key).Right=NodeMatrix.get(rightkey);
+                    NodeMatrix.get(key).Left=NodeMatrix.get(leftkey);
+                }
             }
         }
-        for(int column=0;column<40;column++){
-            int key = -100-column;
-            DLNode columnHead= new DLNode(-1,column);
-            NodeMatrix.put(key,columnHead);
-        }
-        int HeadKey = -99;
-        DLNode Head = new DLNode(-1,-1);
-        NodeMatrix.put(HeadKey,Head);
 
 
-    for (int column=-1;column<40;column++){
-        Integer key = -100-column;
-        switch (column){
-            case -1:
-                NodeMatrix.get(key).Left=NodeMatrix.get(-100-39);
-                NodeMatrix.get(key).Right=NodeMatrix.get(-100-1);
-                continue;
-            case 39:
-                NodeMatrix.get(key).Right = NodeMatrix.get(-99);
-                NodeMatrix.get(key).Left=NodeMatrix.get(-100-(column-1));
-                NodeMatrix.get(key).Up=NodeMatrix.get(100*(RowNumber-1)+column);
-                NodeMatrix.get(key).Down=NodeMatrix.get(column);
-                continue;
-            default:
-                NodeMatrix.get(key).Left=NodeMatrix.get(-100-(column-1));
-                NodeMatrix.get(key).Right=NodeMatrix.get(-100-(column+1));
-                NodeMatrix.get(key).Up=NodeMatrix.get(100*(RowNumber-1)+column);
-                NodeMatrix.get(key).Down=NodeMatrix.get(column);
-                continue;
+
+        //set the filled node
+        for(String s: firstPieceList){
+            int[] filledArray = setLocationArray(s);
+            int row = firstPieceList.indexOf(s);
+            for(int location: filledArray){
+                int key =row*100+location;
+                NodeMatrix.get(key).filled=true;
+                NodeMatrix.get(key).status=s;
+            }
         }
+
+        //remove the nodes which are not filled
+        for(Integer x=0;x<100*(RowNumber-1)+40;x++){
+            if( NodeMatrix.containsKey(x)){
+                if (!NodeMatrix.get(x).filled){
+                    NodeMatrix.get(x).RemoveUpDown();
+                    NodeMatrix.get(x).RemoveLeftRight();
+                    NodeMatrix.remove(x);
+                }
+            }
+        }
+        return NodeMatrix;
     }
 
-    for(int row=0;row<firstPieceList.size();row++){
-        for (int column =0;column<40;column++){
-            int key = row*100+column;
-            if (column==0){
-                int leftkey = row*100+39;
-                boolean f = NodeMatrix.containsKey(leftkey);
-                DLNode x = NodeMatrix.get(key);
-                int rightkey= row*100+1;
-                NodeMatrix.get(key).Left=(NodeMatrix.get(leftkey));
-                NodeMatrix.get(key).Right=NodeMatrix.get(rightkey);
-            }
-            if(column==39){
-                int rightkey=row*100;
-                int leftkey=row*100+38;
-                NodeMatrix.get(key).Left=NodeMatrix.get(leftkey);
-                NodeMatrix.get(key).Right=NodeMatrix.get(rightkey);
-            }
-            if (row==0){
-                int downkey=100+column;
-                NodeMatrix.get(key).Down=NodeMatrix.get(downkey);
-                int upkey=-100-column;
-                NodeMatrix.get(key).Up=NodeMatrix.get(upkey);
-            }
-            if(row==RowNumber-1){
-                int downkey=-100-column;
-                int upkey=(RowNumber-2)*100+column;
-                NodeMatrix.get(key).Up=NodeMatrix.get(upkey);
-                NodeMatrix.get(key).Down=NodeMatrix.get(downkey);
-            }
-            if (row<RowNumber-1&&row>0&&column>0&&column<39){
-                int leftkey = row*100+column-1;
-                int rightkey = row*100+column+1;
-                int upkey=(row-1)*100+column;
-                int downkey=(row+1)*100+column;
-                NodeMatrix.get(key).Up=NodeMatrix.get(upkey);
-                NodeMatrix.get(key).Down=NodeMatrix.get(downkey);
-                NodeMatrix.get(key).Right=NodeMatrix.get(rightkey);
-                NodeMatrix.get(key).Left=NodeMatrix.get(leftkey);
-            }
-        }
-    }
-
-
-
-    //set the filled node
-    for(String s: firstPieceList){
-        int[] filledArray = setLocationArray(s);
-        int row = firstPieceList.indexOf(s);
-        for(int location: filledArray){
-            int key =row*100+location;
-            NodeMatrix.get(key).filled=true;
-            NodeMatrix.get(key).status=s;
-        }
-    }
-
-    //remove the nodes which are not filled
-    for(Integer x=0;x<100*RowNumber;x++){
-        if( NodeMatrix.containsKey(x)){
-            if (!NodeMatrix.get(x).filled){
-                NodeMatrix.get(x).Remove();
-                NodeMatrix.remove(x);
-            }
-        }
-    }
-    return NodeMatrix;
-}
-
-static public void removeColumn(int column){
-        for (Integer key =-100; key<100*(RowNumber-1)+40;key++){
-            if (key!=-99 && NodeNet.containsKey(key)&&Math.abs(key)%100==column){
-                NodeNet.get(key).Remove();
-            }
-        }
-}
-
-static public void RecoverColumn(int column){
-        for (Integer key =-100; key<100*(RowNumber-1)+40;key++){
-            if (key!=-99 && NodeNet.containsKey(key)&&Math.abs(key)%100==column){
-                NodeNet.get(key).Recover();
-            }
-        }
-    }
-static public void RemoveRow(int row){
-        for (Integer key =0; key<100*(RowNumber-1)+40;key++){
+//static public void RemoveColumn(int column){
+//        for (Integer key =-100; key<100*(RowNumber-1)+40;key++){
+//            if (key!=-99 && NodeNet.containsKey(key)&&Math.abs(key)%100==column){
+//                NodeNet.get(key).Remove();
+//            }
+//        }
+//}
+//
+//static public void RecoverColumn(int column){
+//        for (Integer key =-100; key<100*(RowNumber-1)+40;key++){
+//            if (key!=-99 && NodeNet.containsKey(key)&&Math.abs(key)%100==column){
+//                NodeNet.get(key).Recover();
+//            }
+//        }
+//    }
+    static public void RemoveRow(int row){
+        for(int key=0;key<100*(RowNumber-1)+40;key++){
             if (NodeNet.containsKey(key)&&(int)(key/100)==row){
-                NodeNet.get(key).Remove();
+                NodeNet.get(key).RemoveUpDown();
+            }
+        }
+    }
+    static public void RemoveColumn(int column){
+        for(int key=-139;key<100*(RowNumber-1)+40;key++){
+            if (key!=-99&&NodeNet.containsKey(key)&&Math.abs(key)%100==column){
+                NodeNet.get(key).RemoveLeftRight();
+            }
+        }
+    }
+    static public void RecoverRow(int row){
+        for(int key=0;key<100*(RowNumber-1)+40;key++){
+            if (NodeNet.containsKey(key)&&(int)(key/100)==row){
+                NodeNet.get(key).RecoverUpDown();
+            }
+        }
+    }
+    static public void RecoverColumn(int column){
+        for(int key=-139;key<100*(RowNumber-1)+40;key++){
+            if (key!=-99&&NodeNet.containsKey(key)&&Math.abs(key)%100==column){
+                NodeNet.get(key).RecoverLeftRight();
             }
         }
     }
 
-static public void RecoverRow(int row){
-   for (Integer key =0; key<100*(RowNumber-1)+40;key++){
-        if (NodeNet.containsKey(key)&&(int)(key/100)==row){
-            NodeNet.get(key).Recover();
+    static public void SelectRemove(int row){
+            ArrayList<Integer> columns=new ArrayList<>();
+            for (Integer key =100*row; key<100*row+40;key++){
+                if(NodeNet.containsKey(key))
+                    columns.add(key%100);
+            }
+            ArrayList<Integer>rows =new ArrayList<>();
+            for (Integer targetkey=0;targetkey<100*(RowNumber-1)+40;targetkey++){
+                if(NodeNet.containsKey(targetkey)
+                        &&columns.contains(targetkey%100)){
+                   int targetrow= targetkey/100;
+                   if(!rows.contains(targetrow)){
+                        rows.add(targetrow);
+                   }
+                }
+            }
+//            for( Integer removekey=-139;removekey<100*(RowNumber-1)+40;removekey++){
+//                if(removekey!=-99&&NodeNet.containsKey(removekey)){
+//                    int c = Math.abs(removekey);
+//                    int r = removekey/100;
+//                    if(columns.contains(c))
+//                        NodeNet.get(removekey).RemoveLeftRight();
+//                    if(rows.contains(r))
+//                        NodeNet.get(removekey).RemoveUpDown();
+//            }
+//            }
+        for(int c:columns){
+            RemoveColumn(c);
         }
-   }
-}
+        for(int r:rows){
+            RemoveRow(r);
+        }
+        }
 
+
+    static public void TraceBackRecover(int row){
+        ArrayList<Integer> columns=new ArrayList<>();
+        for (Integer key =100*row; key<100*row+40;key++){
+            if(NodeNet.containsKey(key))
+                columns.add(key%100);
+        }
+        ArrayList<Integer>rows =new ArrayList<>();
+        for (Integer targetkey=0;targetkey<100*(RowNumber-1)+40;targetkey++){
+            if(NodeNet.containsKey(targetkey)
+                    &&columns.contains(targetkey%100)){
+                int targetrow= (targetkey/100);
+                if(!rows.contains(targetrow)){
+                    rows.add(targetrow);
+                }
+            }
+        }
+        for(int c:columns){
+            RemoveColumn(c);
+        }
+        for(int r:rows){
+            RemoveRow(r);
+        }
+//        for( Integer recoverkey=-139;recoverkey<100*(RowNumber-1)+40;recoverkey++){
+//            if(recoverkey!=-99&&NodeNet.containsKey(recoverkey)){
+//                if(columns.contains(Math.abs(recoverkey)%100)||
+//                        rows.contains((Integer)(recoverkey/100))){
+//                    NodeNet.get(recoverkey).Recover();
+//                }
+//            }
+//        }
+        }
+
+    public static void SearchForSolution(){
+        if(NodeNet.get(HeadKey).Right==NodeNet.get(HeadKey)){
+            //go widely
+            String startPlacement="";
+            for(Integer index:answer){
+                startPlacement=startPlacement+firstPieceList.get(index);
+            }
+            SolutionSet.add(startPlacement);
+            System.out.println(startPlacement);
+
+        }
+        else if(NodeNet.get(HeadKey).Right.Down==NodeNet.get(HeadKey).Right){
+            //trace back
+            int recoverRow= answer.size()-1;
+            answer.remove(recoverRow);
+            TraceBackRecover(recoverRow);
+            RemoveRow(recoverRow);
+            SearchForSolution();
+        }
+        else{
+            int nextStepRow= NodeNet.get(HeadKey).Right.Down.Row;
+            answer.add(nextStepRow);
+            String status = firstPieceList.get(nextStepRow);
+            SelectRemove(nextStepRow);
+            SearchForSolution();
+            //go deeply
+        }
+//        if(NodeNet.get(HeadKey).Right==NodeNet.get(HeadKey)){
+//            String startPlacement="";
+//            for(Integer index:answer){
+//                startPlacement=TwistGame.generatePlacement(firstPieceList.get(index),
+//                        startPlacement);
+//            }
+//            SolutionSet.add(startPlacement);
+//        }
+
+    }
 
     public static void main(String[] args) {
-        RemoveRow(12);
-        RecoverRow(12);
+        SearchForSolution();
     }
 }

@@ -417,6 +417,8 @@ public class Board extends Application {
 //                makeInitialPlacement(InitialPlacement);
 //                SetVacantPegs(InitialPlacement);
                 setDraggablePiece(InitialPlacement);
+                root.getChildren().remove(Hint);
+                Hint.getChildren().clear();
             }
         });
         Button Hint =new Button("Hint");
