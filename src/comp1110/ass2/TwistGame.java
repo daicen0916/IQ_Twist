@@ -234,7 +234,7 @@ public class TwistGame {
           if(head.contains(s0)){
               continue;
           }
-          for(char s1='0';s1<='7';s1++){
+          for(char s1='1';s1<='8';s1++){
               for(char s2='A';s2<='D';s2++){
                   for (char s3='0';s3<='7';s3++){
                       ArrayList<String> tempPlacement= new ArrayList<>(GivenPlacement);
